@@ -1,3 +1,5 @@
+package serve
+
 import (  
 	"bitbucket.com/finease/backend/pkg/environment"  
 	"bitbucket.com/finease/backend/pkg/routers"  
