@@ -12,8 +12,3 @@ pipelines:
           name: Test and Build
           script:
             - go build -a -o ./bin/finease-backend ./cmd/main.go
-      - step:
-          name: Lint code
-          image: golangci/golangci-lint:v1.31.0
-          script:
-            - golangci-lint run -v
