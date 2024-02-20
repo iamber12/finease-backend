@@ -13,8 +13,6 @@ func main() {
 	// parsed.
 	_ = flag.CommandLine.Parse([]string{})
 
-	//pflag.CommandLine.AddGoFlagSet(flag.CommandLine)
-
 	// Always log to stderr by default
 	if err := flag.Set("logtostderr", "true"); err != nil {
 		glog.Infof("Unable to set logtostderr to true")

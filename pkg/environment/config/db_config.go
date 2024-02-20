@@ -1,4 +1,4 @@
-package environment
+package config
 
 import (
 	"github.com/spf13/pflag"
@@ -9,25 +9,31 @@ const (
 	dbConfigFile = "config/db.env"
 )
 
-type dbConfig struct {
-	DbName   string
-	User     string
-	Password string
-	Host     string
-	Port     int
+type DbConfig struct {
+	Dialect            string
+	Debug              bool
+	MaxOpenConnections int
+	DbName             string
+	User               string
+	Password           string
+	Host               string
+	Port               int
 }
 
-func NewDbConfig() *dbConfig {
-	return &dbConfig{
-		DbName:   "postres",
-		User:     "postgres",
-		Password: "",
-		Host:     "",
-		Port:     5432,
+func NewDbConfig() *DbConfig {
+	return &DbConfig{
+		Dialect:            "postgres",
+		Debug:              false,
+		MaxOpenConnections: 50,
+		DbName:             "postres",
+		User:               "postgres",
+		Password:           "",
+		Host:               "",
+		Port:               5432,
 	}
 }
 
-func (c *dbConfig) AddFlags(fs *pflag.FlagSet) {
+func (c *DbConfig) AddFlags(fs *pflag.FlagSet) {
 	fs.StringVar(&c.DbName, "db-name", c.DbName, "Name of the Database")
 	fs.StringVar(&c.User, "db-user", c.User, "Username of the user to access the DB")
 	fs.StringVar(&c.Password, "db-password", c.Password, "Password to access the DB")
@@ -35,11 +41,11 @@ func (c *dbConfig) AddFlags(fs *pflag.FlagSet) {
 	fs.IntVar(&c.Port, "db-port", c.Port, "Port at which the database host is exposed")
 }
 
-func (c *dbConfig) ReadFromFile() error {
+func (c *DbConfig) ReadFromFile() error {
 	return nil
 }
 
-func (c *dbConfig) ReadFromEnv() error {
+func (c *DbConfig) ReadFromEnv() error {
 	c.DbName = getEnvDefault("DB_NAME", c.DbName)
 	c.User = getEnvDefault("DB_USER", c.User)
 	c.Password = getEnvDefault("DB_PASSWORD", c.Password)
