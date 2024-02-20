@@ -5,7 +5,6 @@ import (
 	"bitbucket.com/finease/backend/pkg/environment"
 	"bitbucket.com/finease/backend/pkg/environment/config"
 	"context"
-	"github.com/golang/glog"
 	"github.com/spf13/cobra"
 )
 
@@ -15,10 +14,6 @@ func NewMigrateCommand() *cobra.Command {
 		Short: "Perform DB migrations",
 		Long:  "Perform DB migrations",
 		Run:   runMigrate,
-	}
-
-	if err := config.Setup(cmd.PersistentFlags()); err != nil {
-		glog.Fatalf("Unable to setup the application config: '%v'", err.Error())
 	}
 
 	return cmd

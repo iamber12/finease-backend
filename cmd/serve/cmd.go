@@ -19,10 +19,6 @@ func NewServeCommand() *cobra.Command {
 		Run:   runServe,
 	}
 
-	if err := config.Setup(cmd.PersistentFlags()); err != nil {
-		glog.Fatalf("Unable to setup the application config: '%v'", err.Error())
-	}
-
 	return cmd
 }
 
