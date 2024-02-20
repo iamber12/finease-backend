@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bitbucket.com/finease/backend/cmd/migrate"
 	"bitbucket.com/finease/backend/cmd/serve"
 	"flag"
 	"github.com/golang/glog"
@@ -25,8 +26,9 @@ func main() {
 
 	// All subcommands under root
 	serveCmd := serve.NewServeCommand()
+	migrateCmd := migrate.NewMigrateCommand()
 
-	rootCmd.AddCommand(serveCmd)
+	rootCmd.AddCommand(serveCmd, migrateCmd)
 
 	if err := rootCmd.Execute(); err != nil {
 		glog.Fatalf("error running command: %v", err)
