@@ -5,6 +5,7 @@ go 1.22.0
 require (
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/gin-gonic/gin v1.9.1
+	github.com/go-gormigrate/gormigrate/v2 v2.0.0
 	github.com/golang/glog v1.2.0
 	github.com/lib/pq v1.10.9
 	github.com/spf13/cobra v1.8.0
