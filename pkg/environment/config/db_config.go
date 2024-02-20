@@ -1,6 +1,7 @@
 package config
 
 import (
+	"fmt"
 	"github.com/spf13/pflag"
 	"strconv"
 )
@@ -58,4 +59,16 @@ func (c *DbConfig) ReadFromEnv() error {
 	}
 	c.Port = portInt
 	return nil
+}
+
+func (c *DbConfig) ConnectionString() string {
+	return c.ConnectionStringWithName(c.DbName)
+}
+
+func (c *DbConfig) ConnectionStringWithName(name string) string {
+	cmd := fmt.Sprintf(
+		"host=%s port=%d user=%s password='%s' dbname=%s sslmode=disable",
+		c.Host, c.Port, c.User, c.Password, name,
+	)
+	return cmd
 }
