@@ -1,4 +1,4 @@
-package environment
+package config
 
 import (
 	"github.com/spf13/pflag"
@@ -9,15 +9,15 @@ const (
 	serverConfigFile = "config/server.env"
 )
 
-type serverConfig struct {
+type ServerConfig struct {
 	JwtSecret     string
 	ListenPort    int
 	ListenAddress string
 	EnvName       string
 }
 
-func NewServerConfig() *serverConfig {
-	return &serverConfig{
+func NewServerConfig() *ServerConfig {
+	return &ServerConfig{
 		JwtSecret:     "",
 		ListenPort:    8000,
 		ListenAddress: "0.0.0.0",
@@ -25,18 +25,18 @@ func NewServerConfig() *serverConfig {
 	}
 }
 
-func (c *serverConfig) AddFlags(fs *pflag.FlagSet) {
+func (c *ServerConfig) AddFlags(fs *pflag.FlagSet) {
 	fs.StringVar(&c.JwtSecret, "server-jwt-secret", c.JwtSecret, "Jwt Secret")
 	fs.StringVar(&c.ListenAddress, "server-listen-address", c.ListenAddress, "The IP address of the network interface at which the server should listen and be exposed")
 	fs.StringVar(&c.EnvName, "server-env-name", c.EnvName, "Name of the environment in which the server is running: dev/stage/prod")
 	fs.IntVar(&c.ListenPort, "server-listen-port", c.ListenPort, "Port at which the server should run")
 }
 
-func (c *serverConfig) ReadFromFile() error {
+func (c *ServerConfig) ReadFromFile() error {
 	return nil
 }
 
-func (c *serverConfig) ReadFromEnv() error {
+func (c *ServerConfig) ReadFromEnv() error {
 	c.JwtSecret = getEnvDefault("SERVER_JWT_SECRET", c.JwtSecret)
 	c.ListenAddress = getEnvDefault("SERVER_LISTEN_ADDRESS", c.ListenAddress)
 	c.EnvName = getEnvDefault("SERVER_ENV_NAME", c.EnvName)

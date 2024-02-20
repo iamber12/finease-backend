@@ -2,7 +2,6 @@ package main
 
 import (
 	"bitbucket.com/finease/backend/cmd/serve"
-	"bitbucket.com/finease/backend/pkg/environment"
 	"flag"
 	"github.com/golang/glog"
 	"github.com/spf13/cobra"
@@ -14,8 +13,6 @@ func main() {
 	// parsed.
 	_ = flag.CommandLine.Parse([]string{})
 
-	//pflag.CommandLine.AddGoFlagSet(flag.CommandLine)
-
 	// Always log to stderr by default
 	if err := flag.Set("logtostderr", "true"); err != nil {
 		glog.Infof("Unable to set logtostderr to true")
@@ -24,10 +21,6 @@ func main() {
 	rootCmd := &cobra.Command{
 		Use:  "finease-backend",
 		Long: "finease-backend serves as a service for the backend of the core services associated with Finease",
-	}
-
-	if err := environment.Environment().Setup(rootCmd.PersistentFlags()); err != nil {
-		glog.Fatalf("Unable to setup the environment config: '%v'", err.Error())
 	}
 
 	// All subcommands under root

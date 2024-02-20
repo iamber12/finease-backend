@@ -26,8 +26,8 @@ func GenerateJWT(userUuid, secret string, expiresAt int64) (string, error) {
 }
 
 func IsJwtAuthorized(c *gin.Context) {
-	env := environment.Environment()
-	jwtSecret := env.ServerConfig.JwtSecret
+	applicationConfig := environment.Env.ApplicationConfig
+	jwtSecret := applicationConfig.ServerConfig.JwtSecret
 
 	xAccessToken := c.GetHeader("X-Access-Token")
 	if xAccessToken == "" {

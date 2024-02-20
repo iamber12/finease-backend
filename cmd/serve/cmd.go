@@ -2,6 +2,7 @@ package serve
 
 import (
 	"bitbucket.com/finease/backend/pkg/environment"
+	"bitbucket.com/finease/backend/pkg/environment/config"
 	"bitbucket.com/finease/backend/pkg/routers"
 	"fmt"
 	"github.com/gin-gonic/gin"
@@ -18,23 +19,30 @@ func NewServeCommand() *cobra.Command {
 		Run:   runServe,
 	}
 
+	if err := config.Setup(cmd.PersistentFlags()); err != nil {
+		glog.Fatalf("Unable to setup the application config: '%v'", err.Error())
+	}
+
 	return cmd
 }
 
 func runServe(cmd *cobra.Command, args []string) {
-	env := environment.Environment()
+	environment.Initialize(&config.Conf)
+
+	applicationConfig := environment.Env.ApplicationConfig
 	server := gin.New()
 
 	server.NoRoute(func(c *gin.Context) {
-		c.JSON(404, gin.H{"code": "Not found", "message": "Page not found", "env": env.ServerConfig.EnvName})
+		c.JSON(404, gin.H{"code": "Not found", "message": "Page not found", "env": applicationConfig.ServerConfig.EnvName})
 	})
 
 	server.Use(gin.Recovery())
 
-	glog.Infof("server running in %s mode", env.ServerConfig.EnvName)
+	glog.Infof("server running in %s mode", applicationConfig.ServerConfig.EnvName)
 
 	routers.SetupRouter(server)
 
-	host, port := env.ServerConfig.ListenAddress, env.ServerConfig.ListenPort
-	log.Fatal(server.Run(fmt.Sprintf("%s:%d", host, port)))
+	host, port := applicationConfig.ServerConfig.ListenAddress, applicationConfig.ServerConfig.ListenPort
+	err := server.Run(fmt.Sprintf("%s:%d", host, port))
+	log.Fatal(err)
 }
