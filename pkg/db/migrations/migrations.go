@@ -6,7 +6,9 @@ import (
 	"time"
 )
 
-var MigrationList = []*gormigrate.Migration{}
+var MigrationList = []*gormigrate.Migration{
+	addUserTable(),
+}
 
 // Model represents the base model struct. All entities will have this struct embedded.
 type Model struct {
