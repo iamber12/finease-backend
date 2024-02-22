@@ -11,7 +11,7 @@ import (
 	"github.com/go-gormigrate/gormigrate/v2"
 )
 
-func removeLoanProposalsUniqueUserUuidConstraint() *gormigrate.Migration {
+func removeLoanProposalsUniqueUserUuidIndex() *gormigrate.Migration {
 	type LoanProposal struct {
 	}
 	return &gormigrate.Migration{
