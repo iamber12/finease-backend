@@ -8,6 +8,8 @@ import (
 
 var MigrationList = []*gormigrate.Migration{
 	addUserTable(),
+	addLoadProposalsTable(),
+	removeLoanProposalsUniqueUserUuidConstraint(),
 }
 
 // Model represents the base model struct. All entities will have this struct embedded.
