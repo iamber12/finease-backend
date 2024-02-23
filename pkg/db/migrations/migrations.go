@@ -1,15 +1,20 @@
 package migrations
 
 import (
+	"time"
+
 	"github.com/go-gormigrate/gormigrate/v2"
 	"gorm.io/gorm"
-	"time"
 )
 
 var MigrationList = []*gormigrate.Migration{
 	addUserTable(),
 	addLoadProposalsTable(),
 	removeLoanProposalsUniqueUserUuidIndex(),
+	addLoadRequestTable(),
+	addLoadAgreementsTable(),
+	addFinancialTransactionsTable(),
+	addLoadAgreementsTable(),
 }
 
 // Model represents the base model struct. All entities will have this struct embedded.
