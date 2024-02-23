@@ -1,17 +1,14 @@
 package v1
 
 import (
-	"bitbucket.com/finease/backend/pkg/controllers/auth/login"
-	"bitbucket.com/finease/backend/pkg/controllers/auth/register"
-	"bitbucket.com/finease/backend/pkg/middlewares"
+	"bitbucket.com/finease/backend/pkg/controllers/handlers"
 	"github.com/gin-gonic/gin"
 )
 
-func SetupAuthRouter(parentRouter *gin.RouterGroup, additionalMiddlewares ...gin.HandlerFunc) {
+func SetupAuthRouter(parentRouter *gin.RouterGroup, authHandler handlers.Auth, additionalMiddlewares ...gin.HandlerFunc) {
 	authRouter := parentRouter.Group("/auth")
 
 	authRouter.Use(additionalMiddlewares...)
 
-	authRouter.GET("/login", login.Controller)
-	authRouter.GET("/register", middlewares.IsJwtAuthorized, register.Controller)
+	authRouter.POST("/register", authHandler.Register)
 }
