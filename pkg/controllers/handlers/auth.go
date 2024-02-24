@@ -29,6 +29,18 @@ func (h authHandler) Register(c *gin.Context) {
 		return
 	}
 
+	validators := []Validator{
+		ValidateEmail,
+	}
+
+	for _, validator := range validators {
+		if !validator(reqBody) {
+			resp := utils.ResponseRenderer("invalid request body found")
+			c.JSON(http.StatusBadRequest, resp)
+			return
+		}
+	}
+
 	inboundUserModel := api.MapUserApiToModel(&reqBody)
 
 	createdUser, err := h.authService.Register(c, inboundUserModel)

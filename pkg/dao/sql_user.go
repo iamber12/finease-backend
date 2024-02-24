@@ -46,8 +46,8 @@ func (s *sqlUser) FindById(ctx context.Context, id string) (*models.User, error)
 	var existingUser *models.User
 	err := tx.Where("uuid = ?", id).First(&existingUser).Error
 	if err != nil {
-		if !errors.Is(err, gorm.ErrRecordNotFound) {
-			return nil, fmt.Errorf("unable to check the error")
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, fmt.Errorf("unable to find the user")
 		}
 		return nil, nil
 	}
@@ -55,6 +55,7 @@ func (s *sqlUser) FindById(ctx context.Context, id string) (*models.User, error)
 
 }
 
+// TODO(yash'V'ardhan-kukreja): Use clause-based update
 func (s *sqlUser) Update(ctx context.Context, id string, clauses map[string]interface{}) (*models.User, error) {
 	tx := s.sessionFactory.New(ctx)
 

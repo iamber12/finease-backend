@@ -7,6 +7,7 @@ type UserList struct {
 }
 
 type User struct {
+	Uuid        string `json:"uuid,omitempty"`
 	Name        string `json:"name,omitempty"`
 	DateOfBirth string `json:"date_of_birth,omitempty"`
 	Address     string `json:"address,omitempty"`
@@ -17,6 +18,7 @@ type User struct {
 
 func MapUserModelToApi(user *models.User) *User {
 	return &User{
+		Uuid:        user.Uuid,
 		Name:        user.Name,
 		DateOfBirth: user.DateOfBirth,
 		Address:     user.Address,
