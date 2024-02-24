@@ -11,4 +11,5 @@ func SetupAuthRouter(parentRouter *gin.RouterGroup, authHandler handlers.Auth, a
 	authRouter.Use(additionalMiddlewares...)
 
 	authRouter.POST("/register", authHandler.Register)
+	authRouter.POST("/login", authHandler.Login)
 }
