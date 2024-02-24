@@ -1,11 +1,12 @@
 package dao
 
 import (
-	"bitbucket.com/finease/backend/pkg/db"
-	"bitbucket.com/finease/backend/pkg/models"
 	"context"
 	"errors"
 	"fmt"
+
+	"bitbucket.com/finease/backend/pkg/db"
+	"bitbucket.com/finease/backend/pkg/models"
 	"gorm.io/gorm"
 )
 
@@ -50,6 +51,20 @@ func (s *sqlUser) FindById(ctx context.Context, id string) (*models.User, error)
 			return nil, fmt.Errorf("unable to check the error")
 		}
 		return nil, nil
+	}
+	return existingUser, nil
+
+}
+
+func (s *sqlUser) FindByEmail(ctx context.Context, email string) (*models.User, error) {
+	tx := s.sessionFactory.New(ctx)
+	var existingUser *models.User
+	err := tx.Where("email = ?", email).First(&existingUser).Error
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, fmt.Errorf("user not found")
+		}
+		return nil, err
 	}
 	return existingUser, nil
 

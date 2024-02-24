@@ -1,17 +1,19 @@
 package services
 
 import (
+	"context"
+	"fmt"
+	"time"
+
 	"bitbucket.com/finease/backend/pkg/dao"
 	"bitbucket.com/finease/backend/pkg/models"
 	"bitbucket.com/finease/backend/pkg/utils"
-	"context"
-	"fmt"
 	"github.com/google/uuid"
-	"time"
 )
 
 type Auth interface {
 	Register(ctx context.Context, user *models.User) (*models.User, error)
+	Login(ctx context.Context, email string, password string) (string, error)
 }
 
 type authService struct {
@@ -37,4 +39,24 @@ func (a authService) Register(ctx context.Context, user *models.User) (*models.U
 		return nil, fmt.Errorf("failed to create the user: %w", err)
 	}
 	return createdUser, nil
+}
+
+func (a authService) Login(ctx context.Context, email string, password string) (string, error) {
+	var err error
+	userDetails, err := a.userDao.FindByEmail(ctx, email)
+
+	if err != nil {
+		return "", fmt.Errorf("failed to get the user: %w", err)
+	}
+
+	if !utils.ValidatePassword(password, userDetails.Password) {
+		return "", fmt.Errorf("invalid password")
+	}
+
+	token, err := utils.GenerateJWT(userDetails.Uuid, "success")
+	if err != nil {
+		return "", fmt.Errorf("failed to create the user: %w", err)
+	}
+
+	return token, nil
 }
