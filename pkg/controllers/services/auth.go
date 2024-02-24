@@ -55,7 +55,7 @@ func (a authService) Login(ctx context.Context, email string, password string) (
 
 	token, err := utils.GenerateJWT(userDetails.Uuid, "success")
 	if err != nil {
-		return "", fmt.Errorf("failed to create the user: %w", err)
+		return "", fmt.Errorf("failed to generate token: %w", err)
 	}
 
 	return token, nil
