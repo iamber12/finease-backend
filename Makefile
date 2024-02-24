@@ -26,3 +26,6 @@ verify:
 
 fmt:
 	@go fmt ./...
+
+stop:
+	@lsof -i tcp:8000 | awk '{ print $2; }' | grep -v "PID" | xargs kill > /dev/null 2&>1
