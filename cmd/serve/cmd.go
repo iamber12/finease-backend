@@ -33,6 +33,9 @@ func runServe(cmd *cobra.Command, args []string) {
 	})
 
 	server.Use(gin.Recovery())
+	server.Use(func(c *gin.Context) {
+		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+	})
 
 	glog.Infof("server running in %s mode", applicationConfig.ServerConfig.EnvName)
 
