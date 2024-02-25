@@ -9,7 +9,7 @@ import (
 )
 
 type JwtClaims struct {
-	Uuid string `json:"uuid,omitempty"`
+	UserUuid string `json:"user_uuid,omitempty"`
 	jwt.StandardClaims
 }
 
@@ -39,7 +39,7 @@ func GenerateJWT(uuid, secret string) (string, error) {
 	expiresAt := time.Now().Add(7 * 24 * time.Hour).Unix()
 
 	claims := &JwtClaims{
-		Uuid: uuid,
+		UserUuid: uuid,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: expiresAt,
 		},
