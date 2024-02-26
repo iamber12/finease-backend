@@ -41,7 +41,7 @@ func (h authHandler) Login(c *gin.Context) {
 
 	resp := utils.ResponseRenderer("Validation successful", gin.H{
 		"jwt_token": jwtToken,
-		"user":      user,
+		"user":      api.MapUserModelToRespone(user),
 	})
 	c.JSON(http.StatusOK, resp)
 }
