@@ -31,7 +31,8 @@ func (h authHandler) Login(c *gin.Context) {
 		return
 	}
 
-	jwtToken, err := h.authService.Login(c, reqBody.Email, reqBody.Password)
+	jwtToken, user, err := h.authService.Login(c, reqBody.Email, reqBody.Password)
+
 	if err != nil {
 		resp := utils.ResponseRenderer(fmt.Sprintf("failed to authenticate the user %v", err))
 		c.JSON(http.StatusForbidden, resp)
@@ -40,6 +41,7 @@ func (h authHandler) Login(c *gin.Context) {
 
 	resp := utils.ResponseRenderer("Validation successful", gin.H{
 		"jwt_token": jwtToken,
+		"user":      user,
 	})
 	c.JSON(http.StatusOK, resp)
 }
