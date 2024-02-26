@@ -16,9 +16,8 @@ type User struct {
 	Password    string `json:"password,omitempty"`
 }
 
-func MapUserModelToApi(user *models.User) *User {
-	return &User{
-		Uuid:        user.Uuid,
+func MapUserRequestToModel(user *User) *models.User {
+	return &models.User{
 		Name:        user.Name,
 		DateOfBirth: user.DateOfBirth,
 		Address:     user.Address,
@@ -28,8 +27,9 @@ func MapUserModelToApi(user *models.User) *User {
 	}
 }
 
-func MapUserApiToModel(user *User) *models.User {
-	return &models.User{
+func MapUserModelToRespone(user *models.User) *User {
+	return &User{
+		Uuid:        user.Uuid,
 		Name:        user.Name,
 		DateOfBirth: user.DateOfBirth,
 		Address:     user.Address,
