@@ -13,7 +13,7 @@ import (
 
 type Auth interface {
 	Register(ctx context.Context, user *models.User) (*models.User, error)
-	Login(ctx context.Context, email string, password string) (string, error)
+	Login(ctx context.Context, email string, password string) (string, *models.User, error)
 }
 
 type authService struct {
@@ -41,22 +41,22 @@ func (a authService) Register(ctx context.Context, user *models.User) (*models.U
 	return createdUser, nil
 }
 
-func (a authService) Login(ctx context.Context, email string, password string) (string, error) {
+func (a authService) Login(ctx context.Context, email string, password string) (string, *models.User, error) {
 	var err error
 	userDetails, err := a.userDao.FindByEmail(ctx, email)
 
 	if err != nil {
-		return "", fmt.Errorf("failed to get the user: %w", err)
+		return "", nil, fmt.Errorf("failed to get the user: %w", err)
 	}
 
 	if !utils.ValidatePassword(password, userDetails.Password) {
-		return "", fmt.Errorf("invalid password")
+		return "", nil, fmt.Errorf("invalid password")
 	}
 
 	token, err := utils.GenerateJWT(userDetails.Uuid, "success")
 	if err != nil {
-		return "", fmt.Errorf("failed to generate token: %w", err)
+		return "", nil, fmt.Errorf("failed to generate token: %w", err)
 	}
 
-	return token, nil
+	return token, userDetails, nil
 }
