@@ -21,25 +21,10 @@ func NewSqlUserDao(factory db.SessionFactory) User {
 func (s *sqlUser) Create(ctx context.Context, user *models.User) (*models.User, error) {
 	tx := s.sessionFactory.New(ctx)
 
-	var existingUser *models.User
-	err := tx.Where("uuid = ?", user.Uuid).First(&existingUser).Error
-	shouldCreate := false
-	if err != nil {
-		if !errors.Is(err, gorm.ErrRecordNotFound) {
-			return nil, fmt.Errorf("unable to check the error")
-		}
-		shouldCreate = true
-	}
-
-	if !shouldCreate {
-		return existingUser, nil
-	}
-
 	if err := tx.Create(user).Error; err != nil {
 		return nil, fmt.Errorf("unable to create the user in the DB: %w", err)
 	}
-
-	return user, nil
+	return s.FindById(ctx, user.Uuid)
 }
 
 func (s *sqlUser) FindById(ctx context.Context, id string) (*models.User, error) {
@@ -47,10 +32,10 @@ func (s *sqlUser) FindById(ctx context.Context, id string) (*models.User, error)
 	var existingUser *models.User
 	err := tx.Where("uuid = ?", id).First(&existingUser).Error
 	if err != nil {
-		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return nil, fmt.Errorf("unable to find the user")
+		if !errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, fmt.Errorf("unable to find the user: %w", err)
 		}
-		return nil, nil
+		return nil, fmt.Errorf("user not found")
 	}
 	return existingUser, nil
 
