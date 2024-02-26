@@ -56,6 +56,7 @@ func (h authHandler) Register(c *gin.Context) {
 
 	validators := []Validator{
 		ValidateEmail,
+		ValidateDOB,
 	}
 
 	for _, validator := range validators {
