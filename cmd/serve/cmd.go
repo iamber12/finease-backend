@@ -5,10 +5,12 @@ import (
 	"bitbucket.com/finease/backend/pkg/environment/config"
 	"bitbucket.com/finease/backend/pkg/routers"
 	"fmt"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/golang/glog"
 	"github.com/spf13/cobra"
 	"log"
+	"time"
 )
 
 func NewServeCommand() *cobra.Command {
@@ -33,10 +35,17 @@ func runServe(cmd *cobra.Command, args []string) {
 	})
 
 	server.Use(gin.Recovery())
-	server.Use(func(c *gin.Context) {
-		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
-	})
-
+	server.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"*"},
+		AllowMethods:     []string{"PUT", "PATCH", "GET", "POST", "DELETE", "OPTIONS"},
+		AllowHeaders:     []string{"Origin", "Content-Length", "Content-Type", "x-access-token"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+		AllowOriginFunc: func(origin string) bool {
+			return true
+		},
+		MaxAge: 12 * time.Hour,
+	}))
 	glog.Infof("server running in %s mode", applicationConfig.ServerConfig.EnvName)
 
 	routers.SetupRouter(server)
