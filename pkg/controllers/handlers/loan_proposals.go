@@ -88,7 +88,7 @@ func (l loanProposalsHandler) List(c *gin.Context) {
 	userUuid := user.Uuid
 	loanProposals, err := l.loanProposalsService.Find(c, userUuid)
 	if err != nil {
-		resp := utils.ResponseRenderer(fmt.Sprintf("failed to list your loan proposals: %w", err))
+		resp := utils.ResponseRenderer(fmt.Sprintf("failed to list your loan proposals: %v", err))
 		c.JSON(http.StatusBadRequest, resp)
 		return
 	}
