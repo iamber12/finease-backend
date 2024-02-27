@@ -26,3 +26,6 @@ verify:
 
 fmt:
 	@go fmt ./...
+
+tests:
+	@go test ./test/...
