@@ -1,0 +1,180 @@
+POST http://localhost:8000/v1/loan/proposals
+Accept: application/json
+X-Access-Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiIyMTlkY2ZiMS0zNzE3LTQxMGMtOGI0OS0wZmQ4ODk5NzAxOGUiLCJleHAiOjE3MDk0ODkwMzV9.WS_Pf_iwEKOg6qLElPshLS9x327H3tBxzv1iuNzhC-s
+
+{
+"amount_start": 10000,
+"amount_end": 20000,
+"min_interest": 8,
+"max_interest": 12,
+"min_return_duration": 8640000,
+"max_return_duration": 17280000,
+"status": "available",
+"description": "Available to all the students out there"
+}
+
+###
+#HTTP/1.1 200 OK
+#Access-Control-Allow-Origin: *
+#Content-Type: application/json; charset=utf-8
+#Date: Sun, 25 Feb 2024 18:31:07 GMT
+#Content-Length: 397
+#
+#{
+#  "meta": {
+#    "message": "Loan Proposal created successfully"
+#  },
+#  "payload": {
+#    "loan_proposal": {
+#      "uuid": "bb1031b6-9e57-4acb-b182-8b32e016ca25",
+#      "user_uuid": "219dcfb1-3717-410c-8b49-0fd88997018e",
+#      "amount_start": 10000,
+#      "amount_end": 20000,
+#      "min_interest": 8,
+#      "max_interest": 12,
+#      "max_return_duration": 17280000,
+#      "min_return_duration": 8640000,
+#      "status": "available",
+#      "description": "Available to all the students out there"
+#    }
+#  }
+#}
+
+PUT http://localhost:8000/v1/loan/proposals/foo-bar-uuid
+Accept: application/json
+X-Access-Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiIyMTlkY2ZiMS0zNzE3LTQxMGMtOGI0OS0wZmQ4ODk5NzAxOGUiLCJleHAiOjE3MDk0ODkwMzV9.WS_Pf_iwEKOg6qLElPshLS9x327H3tBxzv1iuNzhC-s
+
+{
+"max_return_duration": 18280000,
+"description": "Available to all the students and immigrants out there"
+}
+
+###
+#HTTP/1.1 400 Bad Request
+#Access-Control-Allow-Origin: *
+#Content-Type: application/json; charset=utf-8
+#Date: Sun, 25 Feb 2024 18:31:36 GMT
+#Content-Length: 165
+#
+#{
+#  "meta": {
+#    "message": "failed to update the loan proposal: failed to find the loan proposal corresponding to the provided loan proposal uuid: loan proposal not found"
+#  }
+#}
+
+PUT http://localhost:8000/v1/loan/proposals/bb1031b6-9e57-4acb-b182-8b32e016ca25
+Accept: application/json
+X-Access-Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiIyMTlkY2ZiMS0zNzE3LTQxMGMtOGI0OS0wZmQ4ODk5NzAxOGUiLCJleHAiOjE3MDk0ODkwMzV9.WS_Pf_iwEKOg6qLElPshLS9x327H3tBxzv1iuNzhC-s
+
+{
+"max_return_duration": 18280000,
+"description": "Available to all the students and immigrants out there"
+}
+
+###
+#HTTP/1.1 200 OK
+#Access-Control-Allow-Origin: *
+#Content-Type: application/json; charset=utf-8
+#Date: Sun, 25 Feb 2024 18:32:36 GMT
+#Content-Length: 412
+#
+#{
+#  "meta": {
+#    "message": "Loan Proposal updated successfully"
+#  },
+#  "payload": {
+#    "loan_proposal": {
+#      "uuid": "bb1031b6-9e57-4acb-b182-8b32e016ca25",
+#      "user_uuid": "219dcfb1-3717-410c-8b49-0fd88997018e",
+#      "amount_start": 10000,
+#      "amount_end": 20000,
+#      "min_interest": 8,
+#      "max_interest": 12,
+#      "max_return_duration": 18280000,
+#      "min_return_duration": 8640000,
+#      "status": "available",
+#      "description": "Available to all the students and immigrants out there"
+#    }
+#  }
+#}
+
+GET http://localhost:8000/v1/loan/proposals
+Accept: application/json
+X-Access-Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiIyMTlkY2ZiMS0zNzE3LTQxMGMtOGI0OS0wZmQ4ODk5NzAxOGUiLCJleHAiOjE3MDk0ODkwMzV9.WS_Pf_iwEKOg6qLElPshLS9x327H3tBxzv1iuNzhC-s
+
+###
+#HTTP/1.1 200 OK
+#Access-Control-Allow-Origin: *
+#Content-Type: application/json; charset=utf-8
+#Date: Sun, 25 Feb 2024 18:32:53 GMT
+#Content-Length: 421
+#
+#{
+#  "meta": {
+#    "message": "Your loan proposals fetched successfully"
+#  },
+#  "payload": {
+#    "loan_proposals": [
+#      {
+#        "uuid": "bb1031b6-9e57-4acb-b182-8b32e016ca25",
+#        "user_uuid": "219dcfb1-3717-410c-8b49-0fd88997018e",
+#        "amount_start": 10000,
+#        "amount_end": 20000,
+#        "min_interest": 8,
+#        "max_interest": 12,
+#        "max_return_duration": 18280000,
+#        "min_return_duration": 8640000,
+#        "status": "available",
+#        "description": "Available to all the students and immigrants out there"
+#      }
+#    ]
+#  }
+#}
+
+DELETE http://localhost:8000/v1/loan/proposals/foo-bar-uuid
+Accept: application/json
+X-Access-Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiIyMTlkY2ZiMS0zNzE3LTQxMGMtOGI0OS0wZmQ4ODk5NzAxOGUiLCJleHAiOjE3MDk0ODkwMzV9.WS_Pf_iwEKOg6qLElPshLS9x327H3tBxzv1iuNzhC-s
+
+###
+#HTTP/1.1 400 Bad Request
+#Access-Control-Allow-Origin: *
+#Content-Type: application/json; charset=utf-8
+#Date: Sun, 25 Feb 2024 18:33:09 GMT
+#Content-Length: 165
+#
+#{
+#  "meta": {
+#    "message": "failed to delete the loan proposal: failed to find the loan proposal corresponding to the provided loan proposal uuid: loan proposal not found"
+#  }
+#}
+
+DELETE http://localhost:8000/v1/loan/proposals/bb1031b6-9e57-4acb-b182-8b32e016ca25
+Accept: application/json
+X-Access-Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiIyMTlkY2ZiMS0zNzE3LTQxMGMtOGI0OS0wZmQ4ODk5NzAxOGUiLCJleHAiOjE3MDk0ODkwMzV9.WS_Pf_iwEKOg6qLElPshLS9x327H3tBxzv1iuNzhC-s
+
+###
+#HTTP/1.1 200 OK
+#Access-Control-Allow-Origin: *
+#Content-Type: application/json; charset=utf-8
+#Date: Sun, 25 Feb 2024 18:33:36 GMT
+#Content-Length: 57
+#
+#{
+#  "meta": {
+#    "message": "Loan proposal deleted successfully"
+#  }
+#}
+
+GET http://localhost:8000/v1/loan/proposals
+Accept: application/json
+X-Access-Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiIyMTlkY2ZiMS0zNzE3LTQxMGMtOGI0OS0wZmQ4ODk5NzAxOGUiLCJleHAiOjE3MDk0ODkwMzV9.WS_Pf_iwEKOg6qLElPshLS9x327H3tBxzv1iuNzhC-s
+
+###
+#{
+#  "meta": {
+#    "message": "Your loan proposals fetched successfully"
+#  },
+#  "payload": {
+#    "loan_proposals": []
+#  }
+#}
