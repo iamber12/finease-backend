@@ -31,7 +31,8 @@ func (h authHandler) Login(c *gin.Context) {
 		return
 	}
 
-	jwtToken, err := h.authService.Login(c, reqBody.Email, reqBody.Password)
+	jwtToken, user, err := h.authService.Login(c, reqBody.Email, reqBody.Password)
+
 	if err != nil {
 		resp := utils.ResponseRenderer(fmt.Sprintf("failed to authenticate the user %v", err))
 		c.JSON(http.StatusForbidden, resp)
@@ -39,7 +40,8 @@ func (h authHandler) Login(c *gin.Context) {
 	}
 
 	resp := utils.ResponseRenderer("Validation successful", gin.H{
-		"jwtToken": jwtToken,
+		"jwt_token": jwtToken,
+		"user":      api.MapUserModelToRespone(user),
 	})
 	c.JSON(http.StatusOK, resp)
 }
@@ -54,6 +56,7 @@ func (h authHandler) Register(c *gin.Context) {
 
 	validators := []Validator{
 		ValidateEmail,
+		ValidateDOB,
 	}
 
 	for _, validator := range validators {
@@ -64,7 +67,7 @@ func (h authHandler) Register(c *gin.Context) {
 		}
 	}
 
-	inboundUserModel := api.MapUserApiToModel(&reqBody)
+	inboundUserModel := api.MapUserRequestToModel(&reqBody)
 
 	createdUser, err := h.authService.Register(c, inboundUserModel)
 	if err != nil {
@@ -73,7 +76,7 @@ func (h authHandler) Register(c *gin.Context) {
 		return
 	}
 
-	outboundUserResponse := api.MapUserModelToApi(createdUser)
+	outboundUserResponse := api.MapUserModelToRespone(createdUser)
 
 	resp := utils.ResponseRenderer("Successfully registered the user", gin.H{
 		"user": outboundUserResponse,
