@@ -24,8 +24,8 @@ func MapLoanRequestModelToApi(loanRequest *models.LoanRequest) *LoanRequest {
 	}
 }
 
-func MapLoanRequestApiToModel(loanRequest *LoanRequest) *LoanRequest {
-	return &LoanRequest{
+func MapLoanRequestApiToModel(loanRequest *LoanRequest) *models.LoanRequest {
+	return &models.LoanRequest{
 		UserUUID:      loanRequest.UserUUID,
 		Amount:        loanRequest.Amount,
 		MaxInterest:   loanRequest.MaxInterest,

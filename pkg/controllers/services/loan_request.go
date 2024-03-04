@@ -2,9 +2,14 @@ package services
 
 import (
 	"context"
+	"fmt"
+	"time"
+
 	// "time"
 
+	"bitbucket.com/finease/backend/pkg/dao"
 	"bitbucket.com/finease/backend/pkg/models"
+	"github.com/google/uuid"
 	// "github.com/google/uuid"
 )
 
@@ -17,12 +22,17 @@ type LoanRequest interface {
 }
 
 type loanRequestService struct {
-	loanRequestDao models.LoanRequest
+	loanRequestDao dao.LoanRequest
 }
 
-// func (l loanRequestService) Create(ctx context.Context, loanRequest *models.LoanRequest) (*models.LoanRequest, error) {
-// 	var err error
+func (l loanRequestService) Create(ctx context.Context, loanRequest *models.LoanRequest) (*models.LoanRequest, error) {
+	loanRequest.CreatedAt, loanRequest.UpdatedAt = time.Now(), time.Now()
+	loanRequest.Uuid = uuid.New().String()
 
-// 	loanRequest.CreatedAt, loanRequest.UpdatedAt = time.Now(), time.Now()
-// 	loanRequest.Uuid = uuid.New().String()
-// }
+	createdLoanRequest, err := l.loanRequestDao.Create(ctx, loanRequest)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create the loan request: %w", err)
+	}
+
+	return createdLoanRequest, err
+}
