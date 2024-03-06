@@ -13,6 +13,6 @@ func SetupLoanRequestsRouter(parentRouter *gin.RouterGroup, loanRequestsHandler 
 	authRouter.POST("/", loanRequestsHandler.Create)
 	authRouter.PUT("/", loanRequestsHandler.Update)
 	authRouter.DELETE("/", loanRequestsHandler.Delete)
+	authRouter.GET("/", loanRequestsHandler.FindByUserId)
 	authRouter.GET("/", loanRequestsHandler.FindById)
-	authRouter.GET("/", loanRequestsHandler.FindAll)
 }

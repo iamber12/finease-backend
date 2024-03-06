@@ -31,6 +31,19 @@ func (s *sqlLoanRequest) FindById(ctx context.Context, id string) (*models.LoanR
 	return existingLoanProposal, nil
 }
 
+func (s *sqlLoanRequest) FindByUserId(ctx context.Context, userUuid string) ([]*models.LoanRequest, error) {
+	tx := s.sessionFactory.New(ctx)
+	var existingLoanProposal []*models.LoanRequest
+	err := tx.Where("user_uuid = ?", userUuid).First(&existingLoanProposal).Error
+	if err != nil {
+		if !errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, fmt.Errorf("unable to find the loan proposal: %w", err)
+		}
+		return nil, fmt.Errorf("loan proposal not found")
+	}
+	return existingLoanProposal, nil
+}
+
 func (s *sqlLoanRequest) FindAll(ctx context.Context) ([]*models.LoanRequest, error) {
 	tx := s.sessionFactory.New(ctx)
 	var existingLoanProposals []*models.LoanRequest

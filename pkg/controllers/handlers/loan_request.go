@@ -15,7 +15,7 @@ type LoanRequest interface {
 	Create(c *gin.Context)
 	Update(c *gin.Context)
 	FindById(c *gin.Context)
-	FindAll(c *gin.Context)
+	FindByUserId(c *gin.Context)
 	Delete(c *gin.Context)
 }
 
@@ -30,7 +30,7 @@ func NewLoanRequestHandler(loanRequestService services.LoanRequest) LoanRequest 
 func (l loanRequestHandler) Create(c *gin.Context) {
 	var reqBody api.LoanRequest
 
-	if err := c.BindJSON; err != nil {
+	if err := c.BindJSON(&reqBody); err != nil {
 		resp := utils.ResponseRenderer(fmt.Sprintf("failed to parse the request body: %v", err))
 		c.JSON(http.StatusUnprocessableEntity, resp)
 		return
@@ -48,15 +48,118 @@ func (l loanRequestHandler) Create(c *gin.Context) {
 
 	createdLoanRequest, err := l.loanRequestService.Create(c, inboundLoanRequestModel)
 	if err != nil {
-		resp := utils.ResponseRenderer(fmt.Sprintf("failed to create the loan proposal: %v", err))
+		resp := utils.ResponseRenderer(fmt.Sprintf("failed to create the loan request: %v", err))
 		c.JSON(http.StatusBadRequest, resp)
 		return
 	}
 
 	outboundLoanRequest := api.MapLoanRequestModelToApi(createdLoanRequest)
 
-	resp := utils.ResponseRenderer("Loan Proposal created successfully", gin.H{
-		"loan_proposal": outboundLoanRequest,
+	resp := utils.ResponseRenderer("Loan Request created successfully", gin.H{
+		"loan_request": outboundLoanRequest,
+	})
+	c.JSON(http.StatusOK, resp)
+}
+
+func (l loanRequestHandler) Delete(c *gin.Context) {
+	loanRequestUuid := c.Param("loan_request_uuid")
+	user, ok := c.Keys["user"].(models.User)
+	if !ok {
+		resp := utils.ResponseRenderer("failed to parse the user uuid from the processed header")
+		c.JSON(http.StatusInternalServerError, resp)
+		return
+	}
+	userUuid := user.Uuid
+
+	if err := l.loanRequestService.Delete(c, userUuid, loanRequestUuid); err != nil {
+		resp := utils.ResponseRenderer(fmt.Sprintf("failed to delete the loan request: %v", err))
+		c.JSON(http.StatusBadRequest, resp)
+		return
+	}
+
+	resp := utils.ResponseRenderer("Loan request deleted successfully")
+	c.JSON(http.StatusOK, resp)
+}
+
+func (l loanRequestHandler) Update(c *gin.Context) {
+	loanRequestUuid := c.Param("loan_request_uuid")
+	user, ok := c.Keys["user"].(models.User)
+	if !ok {
+		resp := utils.ResponseRenderer("failed to parse the user uuid from the processed header")
+		c.JSON(http.StatusInternalServerError, resp)
+		return
+	}
+	userUuid := user.Uuid
+
+	var reqBody api.LoanRequest
+	if err := c.BindJSON(&reqBody); err != nil {
+		resp := utils.ResponseRenderer(fmt.Sprintf("failed to parse the request body: %v", err))
+		c.JSON(http.StatusUnprocessableEntity, resp)
+		return
+	}
+
+	inboundLoanRequestModel := api.MapLoanRequestApiToModel(&reqBody)
+	updatedLoanrequest, err := l.loanRequestService.Update(c, userUuid, loanRequestUuid, inboundLoanRequestModel)
+	if err != nil {
+		resp := utils.ResponseRenderer(fmt.Sprintf("failed to update the loan request: %v", err))
+		c.JSON(http.StatusBadRequest, resp)
+		return
+	}
+
+	outboundLoanrequest := api.MapLoanRequestModelToApi(updatedLoanrequest)
+
+	resp := utils.ResponseRenderer("Loan request updated successfully", gin.H{
+		"loan_request": outboundLoanrequest,
+	})
+	c.JSON(http.StatusOK, resp)
+}
+
+func (l loanRequestHandler) FindByUserId(c *gin.Context) {
+	user, ok := c.Keys["user"].(models.User)
+	if !ok {
+		resp := utils.ResponseRenderer("failed to parse the user uuid from the processed header")
+		c.JSON(http.StatusInternalServerError, resp)
+		return
+	}
+	userUuid := user.Uuid
+	loanRequests, err := l.loanRequestService.FindByUserId(c, userUuid)
+
+	if err != nil {
+		resp := utils.ResponseRenderer(fmt.Sprintf("failed to list your loan Request: %v", err))
+		c.JSON(http.StatusBadRequest, resp)
+		return
+	}
+
+	outboundLoanRequest := make([]*api.LoanRequest, len(loanRequests))
+	for i, loanRequest := range loanRequests {
+		outboundLoanRequest[i] = api.MapLoanRequestModelToApi(loanRequest)
+	}
+	resp := utils.ResponseRenderer("Your loan Request fetched successfully", gin.H{
+		"loan_Requests": outboundLoanRequest,
+	})
+	c.JSON(http.StatusOK, resp)
+}
+
+func (l loanRequestHandler) FindById(c *gin.Context) {
+	loanRequest, ok := c.Keys["loan_request"].(models.LoanRequest)
+	if !ok {
+		resp := utils.ResponseRenderer("failed to parse the user uuid from the processed header")
+		c.JSON(http.StatusInternalServerError, resp)
+		return
+	}
+	loanRequestUuid := loanRequest.Uuid
+	loanRequestResp, err := l.loanRequestService.FindById(c, loanRequestUuid)
+
+	if err != nil {
+		resp := utils.ResponseRenderer(fmt.Sprintf("failed to list your loan Request: %v", err))
+		c.JSON(http.StatusBadRequest, resp)
+		return
+	}
+
+	outboundLoanRequest := api.MapLoanRequestModelToApi(loanRequestResp)
+
+	resp := utils.ResponseRenderer("Your loan Request fetched successfully", gin.H{
+		"loan_Request": outboundLoanRequest,
 	})
 	c.JSON(http.StatusOK, resp)
 }
