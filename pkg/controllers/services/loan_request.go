@@ -19,10 +19,16 @@ type LoanRequest interface {
 	Delete(ctx context.Context, ownerUserUuid, id string) error
 	FindByUserId(ctx context.Context, ownerUserUuid string) ([]*models.LoanRequest, error)
 	FindById(ctx context.Context, id string) (*models.LoanRequest, error)
+	FindAll(ctx context.Context) ([]*models.LoanRequest, error)
 }
 
 type loanRequestService struct {
+	userDao        dao.User
 	loanRequestDao dao.LoanRequest
+}
+
+func NewLoanRequestService(loanRequestDao dao.LoanRequest, userDao dao.User) LoanRequest {
+	return &loanRequestService{loanRequestDao: loanRequestDao, userDao: userDao}
 }
 
 func (l loanRequestService) Create(ctx context.Context, loanRequest *models.LoanRequest) (*models.LoanRequest, error) {
@@ -84,6 +90,14 @@ func (l loanRequestService) FindById(ctx context.Context, id string) (*models.Lo
 
 func (l loanRequestService) FindByUserId(ctx context.Context, ownerUserUuid string) ([]*models.LoanRequest, error) {
 	loanRequests, err := l.loanRequestDao.FindByUserId(ctx, ownerUserUuid)
+	if err != nil {
+		return []*models.LoanRequest{}, fmt.Errorf("failed to fetch your loan requests: %w", err)
+	}
+	return loanRequests, nil
+}
+
+func (l loanRequestService) FindAll(ctx context.Context) ([]*models.LoanRequest, error) {
+	loanRequests, err := l.loanRequestDao.FindAll(ctx)
 	if err != nil {
 		return []*models.LoanRequest{}, fmt.Errorf("failed to fetch your loan requests: %w", err)
 	}

@@ -20,66 +20,66 @@ func NewSqlLoanRequestDao(factory db.SessionFactory) LoanRequest {
 
 func (s *sqlLoanRequest) FindById(ctx context.Context, id string) (*models.LoanRequest, error) {
 	tx := s.sessionFactory.New(ctx)
-	var existingLoanProposal *models.LoanRequest
-	err := tx.Where("uuid = ?", id).First(&existingLoanProposal).Error
+	var existingLoanRequest *models.LoanRequest
+	err := tx.Where("uuid = ?", id).First(&existingLoanRequest).Error
 	if err != nil {
 		if !errors.Is(err, gorm.ErrRecordNotFound) {
-			return nil, fmt.Errorf("unable to find the loan proposal: %w", err)
+			return nil, fmt.Errorf("unable to find the loan request: %w", err)
 		}
-		return nil, fmt.Errorf("loan proposal not found")
+		return nil, fmt.Errorf("loan request not found")
 	}
-	return existingLoanProposal, nil
+	return existingLoanRequest, nil
 }
 
 func (s *sqlLoanRequest) FindByUserId(ctx context.Context, userUuid string) ([]*models.LoanRequest, error) {
 	tx := s.sessionFactory.New(ctx)
-	var existingLoanProposal []*models.LoanRequest
-	err := tx.Where("user_uuid = ?", userUuid).First(&existingLoanProposal).Error
+	var existingLoanRequest []*models.LoanRequest
+	err := tx.Where("user_uuid = ?", userUuid).Find(&existingLoanRequest).Error
 	if err != nil {
 		if !errors.Is(err, gorm.ErrRecordNotFound) {
-			return nil, fmt.Errorf("unable to find the loan proposal: %w", err)
+			return nil, fmt.Errorf("unable to find the loan request: %w", err)
 		}
-		return nil, fmt.Errorf("loan proposal not found")
+		return nil, fmt.Errorf("loan request not found")
 	}
-	return existingLoanProposal, nil
+	return existingLoanRequest, nil
 }
 
 func (s *sqlLoanRequest) FindAll(ctx context.Context) ([]*models.LoanRequest, error) {
 	tx := s.sessionFactory.New(ctx)
-	var existingLoanProposals []*models.LoanRequest
-	err := tx.Find(&existingLoanProposals).Error
+	var existingLoanRequests []*models.LoanRequest
+	err := tx.Find(&existingLoanRequests).Error
 	if err != nil {
 		if !errors.Is(err, gorm.ErrRecordNotFound) {
-			return nil, fmt.Errorf("unable to find the loan proposals: %w", err)
+			return nil, fmt.Errorf("unable to find the loan requests: %w", err)
 		}
 		return []*models.LoanRequest{}, nil
 	}
-	return existingLoanProposals, nil
+	return existingLoanRequests, nil
 }
 
-func (s *sqlLoanRequest) Create(ctx context.Context, loanProposal *models.LoanRequest) (*models.LoanRequest, error) {
+func (s *sqlLoanRequest) Create(ctx context.Context, loanRequest *models.LoanRequest) (*models.LoanRequest, error) {
 	tx := s.sessionFactory.New(ctx)
 
-	if err := tx.Create(loanProposal).Error; err != nil {
-		return nil, fmt.Errorf("unable to create the loan proposal in the DB: %w", err)
+	if err := tx.Create(loanRequest).Error; err != nil {
+		return nil, fmt.Errorf("unable to create the loan request in the DB: %w", err)
 	}
 
-	return s.FindById(ctx, loanProposal.Uuid)
+	return s.FindById(ctx, loanRequest.Uuid)
 }
 
 func (s *sqlLoanRequest) Update(ctx context.Context, id string, patch *models.LoanRequest) (*models.LoanRequest, error) {
 	tx := s.sessionFactory.New(ctx)
 
-	var existingLoanProposal *models.LoanRequest
-	err := tx.Where("uuid = ?", id).First(&existingLoanProposal).Error
+	var existingLoanRequest *models.LoanRequest
+	err := tx.Where("uuid = ?", id).First(&existingLoanRequest).Error
 	if err != nil {
 		if !errors.Is(err, gorm.ErrRecordNotFound) {
-			return nil, fmt.Errorf("unable to find the existing loan proposal")
+			return nil, fmt.Errorf("unable to find the existing loan request")
 		}
-		return nil, fmt.Errorf("loan proposal not found")
+		return nil, fmt.Errorf("loan request not found")
 	}
-	if err := tx.Model(existingLoanProposal).Updates(patch).Error; err != nil {
-		return nil, fmt.Errorf("unable to update the loan proposal: %w", err)
+	if err := tx.Model(existingLoanRequest).Where("uuid = ?", id).Updates(patch).Error; err != nil {
+		return nil, fmt.Errorf("unable to update the loan request: %w", err)
 	}
 	return s.FindById(ctx, id)
 }
@@ -87,7 +87,7 @@ func (s *sqlLoanRequest) Update(ctx context.Context, id string, patch *models.Lo
 func (s *sqlLoanRequest) Delete(ctx context.Context, id string) error {
 	tx := s.sessionFactory.New(ctx)
 	if err := tx.Unscoped().Where("uuid = ?", id).Delete(&models.LoanRequest{}).Error; err != nil {
-		return fmt.Errorf("unable to delete the loan proposal: %w", err)
+		return fmt.Errorf("unable to delete the loan request: %w", err)
 	}
 	return nil
 }

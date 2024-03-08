@@ -16,8 +16,11 @@ type LoanRequest interface {
 	Update(c *gin.Context)
 	FindById(c *gin.Context)
 	FindByUserId(c *gin.Context)
+	FindAll(c *gin.Context)
 	Delete(c *gin.Context)
 }
+
+var _ LoanRequest = loanRequestHandler{}
 
 type loanRequestHandler struct {
 	loanRequestService services.LoanRequest
@@ -135,7 +138,7 @@ func (l loanRequestHandler) FindByUserId(c *gin.Context) {
 		outboundLoanRequest[i] = api.MapLoanRequestModelToApi(loanRequest)
 	}
 	resp := utils.ResponseRenderer("Your loan Request fetched successfully", gin.H{
-		"loan_Requests": outboundLoanRequest,
+		"loan_requests": outboundLoanRequest,
 	})
 	c.JSON(http.StatusOK, resp)
 }
@@ -159,7 +162,27 @@ func (l loanRequestHandler) FindById(c *gin.Context) {
 	outboundLoanRequest := api.MapLoanRequestModelToApi(loanRequestResp)
 
 	resp := utils.ResponseRenderer("Your loan Request fetched successfully", gin.H{
-		"loan_Request": outboundLoanRequest,
+		"loan_request": outboundLoanRequest,
+	})
+	c.JSON(http.StatusOK, resp)
+}
+
+func (l loanRequestHandler) FindAll(c *gin.Context) {
+	loanRequestResp, err := l.loanRequestService.FindAll(c)
+
+	if err != nil {
+		resp := utils.ResponseRenderer(fmt.Sprintf("failed to list loan Requests: %v", err))
+		c.JSON(http.StatusBadRequest, resp)
+		return
+	}
+
+	outboundLoanRequest := make([]*api.LoanRequest, len(loanRequestResp))
+	for i, loanRequest := range loanRequestResp {
+		outboundLoanRequest[i] = api.MapLoanRequestModelToApi(loanRequest)
+	}
+
+	resp := utils.ResponseRenderer("Loan requests fetched successfully", gin.H{
+		"loan_requests": outboundLoanRequest,
 	})
 	c.JSON(http.StatusOK, resp)
 }

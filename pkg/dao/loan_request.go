@@ -12,4 +12,5 @@ type LoanRequest interface {
 	Delete(ctx context.Context, id string) error
 	FindByUserId(ctx context.Context, userUuid string) ([]*models.LoanRequest, error)
 	FindById(ctx context.Context, id string) (*models.LoanRequest, error)
+	FindAll(ctx context.Context) ([]*models.LoanRequest, error)
 }
