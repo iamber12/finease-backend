@@ -30,12 +30,7 @@ func runServe(cmd *cobra.Command, args []string) {
 	applicationConfig := environment.Env.ApplicationConfig
 	server := gin.New()
 
-	server.NoRoute(func(c *gin.Context) {
-		c.JSON(404, gin.H{"code": "Not found", "message": "Page not found", "env": applicationConfig.ServerConfig.EnvName})
-	})
-
-	server.Use(gin.Recovery())
-	server.Use(cors.New(cors.Config{
+	corsMiddleware := cors.New(cors.Config{
 		AllowOrigins:     []string{"*"},
 		AllowMethods:     []string{"PUT", "PATCH", "GET", "POST", "DELETE", "OPTIONS"},
 		AllowHeaders:     []string{"Origin", "Content-Length", "Content-Type", "x-access-token"},
@@ -45,7 +40,17 @@ func runServe(cmd *cobra.Command, args []string) {
 			return true
 		},
 		MaxAge: 12 * time.Hour,
-	}))
+	})
+
+	server.OnRedirect(corsMiddleware)
+
+	server.NoRoute(func(c *gin.Context) {
+		c.JSON(404, gin.H{"code": "Not found", "message": "Page not found", "env": applicationConfig.ServerConfig.EnvName})
+	})
+
+	server.Use(gin.Recovery())
+	server.Use(corsMiddleware)
+
 	glog.Infof("server running in %s mode", applicationConfig.ServerConfig.EnvName)
 
 	routers.SetupRouter(server)
