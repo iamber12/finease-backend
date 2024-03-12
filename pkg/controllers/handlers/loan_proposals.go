@@ -1,13 +1,14 @@
 package handlers
 
 import (
+	"fmt"
+	"net/http"
+
 	"bitbucket.com/finease/backend/pkg/controllers/api"
 	"bitbucket.com/finease/backend/pkg/controllers/services"
 	"bitbucket.com/finease/backend/pkg/models"
 	"bitbucket.com/finease/backend/pkg/utils"
-	"fmt"
 	"github.com/gin-gonic/gin"
-	"net/http"
 )
 
 type LoanProposal interface {
