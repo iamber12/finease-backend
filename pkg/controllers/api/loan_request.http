@@ -3,16 +3,16 @@ POST http://localhost:8000/v1/loan/request/
 Accept: application/json
 X-Access-Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiIwOGNmYWU0OC03NmVhLTQ0M2ItYjNjOC02MjRhZjRjOWUyMTEiLCJleHAiOjE3MTA1NDM4MjN9.vwrbbhUgkfa0eE-4JwUc7CFJTXinr8W0bs7akmOa2a0
 
-#{
-#"amount_start": 10000,
-#"amount_end": 20000,
-#"min_interest": 8,
-#"max_interest": 12,
-#"min_return_duration": 8640000,
-#"max_return_duration": 17280000,
-#"status": "available",
-#"description": "Sample description"
-#}
+{
+"amount_start": 10000,
+"amount_end": 20000,
+"min_interest": 8,
+"max_interest": 12,
+"min_return_duration": 8640000,
+"max_return_duration": 17280000,
+"status": "available",
+"description": "Sample description"
+}
 
 #{
 #  "meta": {
