@@ -3,16 +3,16 @@ POST http://localhost:8000/v1/loan/request/
 Accept: application/json
 X-Access-Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiIwOGNmYWU0OC03NmVhLTQ0M2ItYjNjOC02MjRhZjRjOWUyMTEiLCJleHAiOjE3MTA1NDM4MjN9.vwrbbhUgkfa0eE-4JwUc7CFJTXinr8W0bs7akmOa2a0
 
-#{
-#"amount_start": 10000,
-#"amount_end": 20000,
-#"min_interest": 8,
-#"max_interest": 12,
-#"min_return_duration": 8640000,
-#"max_return_duration": 17280000,
-#"status": "available",
-#"description": "Sample description"
-#}
+{
+"amount_start": 10000,
+"amount_end": 20000,
+"min_interest": 8,
+"max_interest": 12,
+"min_return_duration": 8640000,
+"max_return_duration": 17280000,
+"status": "available",
+"description": "Sample description"
+}
 
 #{
 #  "meta": {
@@ -22,6 +22,8 @@ X-Access-Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiIwOGNmYWU
 #    "loan_request": {
 #      "uuid": "2fec6411-1486-47ca-88ab-2c311f22ed42",
 #      "user_uuid": "08cfae48-76ea-443b-b3c8-624af4c9e211",
+#      "amount_start": 10000,
+#      "amount_end": 20000,
 #      "min_interest": 8,
 #      "max_interest": 12,
 #      "status": "available",
@@ -48,6 +50,8 @@ X-Access-Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiIwOGNmYWU
 #    "loan_request": {
 #      "uuid": "2fec6411-1486-47ca-88ab-2c311f22ed42",
 #      "user_uuid": "08cfae48-76ea-443b-b3c8-624af4c9e211",
+#      "amount_start": 10000,
+#      "amount_end": 20000,
 #      "min_interest": 8,
 #      "max_interest": 14,
 #      "status": "available",
@@ -78,6 +82,8 @@ X-Access-Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiIwOGNmYWU
 #      {
 #        "uuid": "2fec6411-1486-47ca-88ab-2c311f22ed42",
 #        "user_uuid": "08cfae48-76ea-443b-b3c8-624af4c9e211",
+#        "amount_start": 10000,
+#        "amount_end": 20000,
 #        "min_interest": 8,
 #        "max_interest": 14,
 #        "status": "available",
@@ -102,6 +108,8 @@ X-Access-Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiIwOGNmYWU
 #      {
 #        "uuid": "2fec6411-1486-47ca-88ab-2c311f22ed42",
 #        "user_uuid": "08cfae48-76ea-443b-b3c8-624af4c9e211",
+#        "amount_start": 10000,
+#        "amount_end": 20000,
 #        "min_interest": 8,
 #        "max_interest": 14,
 #        "status": "available",
@@ -110,6 +118,8 @@ X-Access-Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiIwOGNmYWU
 #      {
 #        "uuid": "df72e1b6-bbc6-4366-bd94-8b304da69ff2",
 #        "user_uuid": "08cfae48-76ea-443b-b3c8-624af4c9e211",
+#        "amount_start": 10000,
+#        "amount_end": 20000,
 #        "min_interest": 10,
 #        "max_interest": 14,
 #        "status": "available",
