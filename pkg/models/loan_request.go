@@ -4,8 +4,6 @@ type LoanRequest struct {
 	Generic
 	UserUUID      string  `gorm:"not null"`
 	Amount        float64 `gorm:"not null"`
-	AmountStart   float64 `gorm:"not null"`
-	AmountEnd     float64 `gorm:"not null"`
 	MinInterest   float64 `gorm:"not null"`
 	MaxInterest   float64 `gorm:"not null"`
 	DurationToPay int64   `gorm:"not null"`

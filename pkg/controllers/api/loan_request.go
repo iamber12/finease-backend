@@ -6,8 +6,6 @@ type LoanRequest struct {
 	Uuid          string  `json:"uuid,omitempty"`
 	UserUUID      string  `json:"user_uuid,omitempty"`
 	Amount        float64 `json:"amount,omitempty"`
-	AmountStart   float64 `json:"amount_start,omitempty"`
-	AmountEnd     float64 `json:"amount_end,omitempty"`
 	MinInterest   float64 `json:"min_interest,omitempty"`
 	MaxInterest   float64 `json:"max_interest,omitempty"`
 	DurationToPay int64   `json:"duration,omitempty"`
@@ -20,8 +18,6 @@ func MapLoanRequestModelToApi(loanRequest *models.LoanRequest) *LoanRequest {
 		Uuid:          loanRequest.Uuid,
 		UserUUID:      loanRequest.UserUUID,
 		Amount:        loanRequest.Amount,
-		AmountStart:   loanRequest.AmountStart,
-		AmountEnd:     loanRequest.AmountEnd,
 		MinInterest:   loanRequest.MinInterest,
 		MaxInterest:   loanRequest.MaxInterest,
 		DurationToPay: loanRequest.DurationToPay,
@@ -34,8 +30,6 @@ func MapLoanRequestApiToModel(loanRequest *LoanRequest) *models.LoanRequest {
 	return &models.LoanRequest{
 		UserUUID:      loanRequest.UserUUID,
 		Amount:        loanRequest.Amount,
-		AmountStart:   loanRequest.AmountStart,
-		AmountEnd:     loanRequest.AmountEnd,
 		MinInterest:   loanRequest.MinInterest,
 		MaxInterest:   loanRequest.MaxInterest,
 		DurationToPay: loanRequest.DurationToPay,
