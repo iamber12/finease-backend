@@ -1,3 +1,4 @@
+ssh -tt -o StrictHostKeyChecking=no ubuntu@ec2-3-15-22-52.us-east-2.compute.amazonaws.com
 cd FinEase/backend
 git reset --hard HEAD~0
 git pull origin dev --rebase
