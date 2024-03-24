@@ -7,5 +7,5 @@ pipelines:
           
           script:
             - echo "Deployment Starting"
-            - ./deploy.sh 
+            - cat ./deploy.sh | ssh -tt -o StrictHostKeyChecking=no ubuntu@ec2-3-15-22-52.us-east-2.compute.amazonaws.com
             - echo "Deploying finished"
