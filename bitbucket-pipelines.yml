@@ -7,10 +7,6 @@ pipelines:
           
           script:
             - echo "Deployment Starting"
-            - ssh -tt -o StrictHostKeyChecking=no ubuntu@ec2-3-15-22-52.us-east-2.compute.amazonaws.com
-            - cd FinEase/backend
-            - git reset --hard HEAD~0
-            - git pull origin dev --rebase
-            - nohup go build -a -o ./bin/finease-backend ./cmd/main.go > build.log 2>&1
-            - ./bin/finease-backend serve --db-name=$DB_NAME --db-user=$DB_USER --db-password=$DB_PASSWORD --db-host=$DB_HOST --db-port=$DB_PORT &
+            - scp -o StrictHostKeyChecking=no ./deploy.sh ubuntu@ec2-3-15-22-52.us-east-2.compute.amazonaws.com:/tmp/deploy.sh
+            - ssh -o StrictHostKeyChecking=no ubuntu@ec2-3-15-22-52.us-east-2.compute.amazonaws.com 'bash /tmp/deploy.sh'
             - echo "Deploying finished"
