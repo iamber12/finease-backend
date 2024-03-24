@@ -69,7 +69,7 @@ func (h authHandler) Register(c *gin.Context) {
 
 	inboundUserModel := api.MapUserRequestToModel(&reqBody)
 
-	createdUser, err := h.authService.Register(c, inboundUserModel)
+	createdUser, err := h.authService.Register(c, *inboundUserModel)
 	if err != nil {
 		resp := utils.ResponseRenderer(fmt.Sprintf("failed to register the user: %v", err))
 		c.JSON(http.StatusBadRequest, resp)
