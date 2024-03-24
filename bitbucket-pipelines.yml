@@ -1,0 +1,21 @@
+image: golang:1.22.0
+pipelines:
+  default:
+      - step:
+          name: Build
+          script:
+            - go build -a -o ./bin/finease-backend ./cmd/main.go
+  branches:
+    release/SIT:
+      - step:
+          name: Build
+          script:
+            - go build -a -o ./bin/finease-backend ./cmd/main.go
+      - step:
+          name: Deploy to test
+          deployment: test
+          
+          script:
+            - echo "Deployment Starting"
+            - cat ./deploy.sh | ssh -tt -o StrictHostKeyChecking=no ec2-user@ec2-54-204-68-167.compute-1.amazonaws.com
+            - echo "Deploying finished"
