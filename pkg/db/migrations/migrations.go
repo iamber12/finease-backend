@@ -15,8 +15,6 @@ var MigrationList = []*gormigrate.Migration{
 	addLoanAgreementsTable(),
 	addFinancialTransactionsTable(),
 	usersTableEmailUniqueIndex(),
-	removeOldLoanAgreementsTable(),
-	addNewLoanAgreementsTable(),
 	addProposalUuidToLoanRequestsTable(),
 }
 

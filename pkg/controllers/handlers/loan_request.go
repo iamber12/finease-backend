@@ -53,7 +53,7 @@ func (l loanRequestHandler) Create(c *gin.Context) {
 		inboundLoanRequestModel.ProposalUuid = utils.ToPtr("")
 	}
 
-	createdLoanRequest, err := l.loanRequestService.Create(c, inboundLoanRequestModel)
+	createdLoanRequest, err := l.loanRequestService.Create(c, userUuid, inboundLoanRequestModel)
 	if err != nil {
 		resp := utils.ResponseRenderer(fmt.Sprintf("failed to create the loan request: %v", err))
 		c.JSON(http.StatusBadRequest, resp)

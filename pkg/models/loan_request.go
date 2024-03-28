@@ -11,3 +11,10 @@ type LoanRequest struct {
 	ProposalUuid  *string
 	Description   string
 }
+
+type LoanRequestStatus string
+
+const (
+	LOAN_REQUEST_APPROVED LoanRequestStatus = "approved"
+	LOAN_REQUEST_DENIED   LoanRequestStatus = "denied"
+)
