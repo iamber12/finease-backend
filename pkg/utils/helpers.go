@@ -47,3 +47,22 @@ func GenerateJWT(uuid, secret string) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	return token.SignedString([]byte(secret))
 }
+
+func FromPtr[T any](obj *T) T {
+	if obj == nil {
+		return *obj
+	}
+	return *obj
+}
+
+func ToPtr[T any](obj T) *T {
+	return &obj
+}
+
+func PtrCopy[T any](obj *T) *T {
+	if obj == nil {
+		return nil
+	}
+	obj2 := *obj
+	return &obj2
+}

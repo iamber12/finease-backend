@@ -13,7 +13,7 @@ import (
 )
 
 func addFinancialTransactionsTable() *gormigrate.Migration {
-	type FinancialTranscations struct {
+	type FinancialTransactions struct {
 		Model
 		LoanProposalUUID string  `gorm:"not null"`
 		LoanRequestID    string  `gorm:"not null"`
@@ -26,7 +26,7 @@ func addFinancialTransactionsTable() *gormigrate.Migration {
 	return &gormigrate.Migration{
 		ID: "202402222133",
 		Migrate: func(tx *gorm.DB) error {
-			return tx.Migrator().AutoMigrate(&FinancialTranscations{})
+			return tx.Migrator().AutoMigrate(&FinancialTransactions{})
 		},
 	}
 }

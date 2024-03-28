@@ -7,15 +7,16 @@ import (
 )
 
 func SetupLoanRequestsRouter(parentRouter *gin.RouterGroup, loanRequestsService services.LoanRequest, additionalMiddlewares ...gin.HandlerFunc) {
-	authRouter := parentRouter.Group("/loan/request")
+	loanRequestsRouter := parentRouter.Group("/loan/requests")
 	loanRequestsHandler := handlers.NewLoanRequestHandler(loanRequestsService)
 
-	authRouter.Use(additionalMiddlewares...)
+	loanRequestsRouter.Use(additionalMiddlewares...)
 
-	authRouter.POST("/", loanRequestsHandler.Create)
-	authRouter.PUT("/:loan_request_uuid", loanRequestsHandler.Update)
-	authRouter.DELETE("/:loan_request_uuid", loanRequestsHandler.Delete)
-	authRouter.GET("/", loanRequestsHandler.FindByUserId)
-	authRouter.GET("/loan-requests", loanRequestsHandler.FindAll)
-	authRouter.GET("/:loan_request_uuid", loanRequestsHandler.FindById)
+	loanRequestsRouter.POST("/", loanRequestsHandler.Create)
+	loanRequestsRouter.PUT("/:loan_request_uuid", loanRequestsHandler.Update)
+	loanRequestsRouter.DELETE("/:loan_request_uuid", loanRequestsHandler.Delete)
+	loanRequestsRouter.GET("/", loanRequestsHandler.FindByUserId)
+	loanRequestsRouter.GET("/all", loanRequestsHandler.FindAll)
+	loanRequestsRouter.GET("/:loan_request_uuid", loanRequestsHandler.FindById)
+	loanRequestsRouter.GET("/proposal/:loan_proposal_uuid", loanRequestsHandler.FindByProposalId)
 }
