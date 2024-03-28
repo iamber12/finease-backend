@@ -156,6 +156,11 @@ func (l loanRequestHandler) FindByProposalId(c *gin.Context) {
 	}
 	userUuid := user.Uuid
 	loanProposalUuid := c.Param("loan_proposal_uuid")
+	if loanProposalUuid == "" {
+		resp := utils.ResponseRenderer("cannot find loan requests corresponding to empty loan proposal uuid")
+		c.JSON(http.StatusBadRequest, resp)
+		return
+	}
 
 	loanRequests, err := l.loanRequestService.FindByProposalId(c, userUuid, loanProposalUuid)
 	if err != nil {
@@ -164,12 +169,12 @@ func (l loanRequestHandler) FindByProposalId(c *gin.Context) {
 		return
 	}
 
-	outboundLoanRequest := make([]*api.LoanRequest, len(loanRequests))
+	outboundLoanRequests := make([]*api.LoanRequest, len(loanRequests))
 	for i, loanRequest := range loanRequests {
-		outboundLoanRequest[i] = api.MapLoanRequestModelToApi(loanRequest)
+		outboundLoanRequests[i] = api.MapLoanRequestModelToApi(loanRequest)
 	}
-	resp := utils.ResponseRenderer("Your loan Request fetched successfully", gin.H{
-		"loan_requests": outboundLoanRequest,
+	resp := utils.ResponseRenderer("Loan Requests fetched successfully", gin.H{
+		"loan_requests": outboundLoanRequests,
 	})
 	c.JSON(http.StatusOK, resp)
 }
