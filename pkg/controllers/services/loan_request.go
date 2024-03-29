@@ -14,26 +14,41 @@ import (
 )
 
 type LoanRequest interface {
-	Create(ctx context.Context, loanRequest *models.LoanRequest) (*models.LoanRequest, error)
+	Create(ctx context.Context, creatorUserUuid string, loanRequest *models.LoanRequest) (*models.LoanRequest, error)
 	Update(ctx context.Context, ownerUserUuid, id string, patch *models.LoanRequest) (*models.LoanRequest, error)
 	Delete(ctx context.Context, ownerUserUuid, id string) error
 	FindByUserId(ctx context.Context, ownerUserUuid string) ([]*models.LoanRequest, error)
+	FindByProposalId(ctx context.Context, invokerUserUuid, proposalUuid string) ([]*models.LoanRequest, error)
 	FindById(ctx context.Context, id string) (*models.LoanRequest, error)
 	FindAll(ctx context.Context) ([]*models.LoanRequest, error)
 }
 
 type loanRequestService struct {
-	userDao        dao.User
-	loanRequestDao dao.LoanRequest
+	userDao         dao.User
+	loanRequestDao  dao.LoanRequest
+	loanProposalDao dao.LoanProposal
 }
 
-func NewLoanRequestService(loanRequestDao dao.LoanRequest, userDao dao.User) LoanRequest {
-	return &loanRequestService{loanRequestDao: loanRequestDao, userDao: userDao}
+func NewLoanRequestService(loanRequestDao dao.LoanRequest, loanProposalDao dao.LoanProposal, userDao dao.User) LoanRequest {
+	return &loanRequestService{loanRequestDao: loanRequestDao, loanProposalDao: loanProposalDao, userDao: userDao}
 }
 
-func (l loanRequestService) Create(ctx context.Context, loanRequest *models.LoanRequest) (*models.LoanRequest, error) {
+func (l loanRequestService) Create(ctx context.Context, creatorUserUuid string, loanRequest *models.LoanRequest) (*models.LoanRequest, error) {
 	loanRequest.CreatedAt, loanRequest.UpdatedAt = time.Now(), time.Now()
 	loanRequest.Uuid = uuid.New().String()
+
+	if loanRequest.ProposalUuid == nil {
+		return nil, fmt.Errorf("nil loan proposal uuid not allowed")
+	}
+	if *loanRequest.ProposalUuid != "" {
+		loanProposal, err := l.loanProposalDao.FindById(ctx, *loanRequest.ProposalUuid)
+		if err != nil {
+			return nil, fmt.Errorf("loan proposal not found with the provided uuid")
+		}
+		if loanProposal.UserUUID == creatorUserUuid {
+			return nil, fmt.Errorf("cannot request a loan to yourself")
+		}
+	}
 
 	createdLoanRequest, err := l.loanRequestDao.Create(ctx, loanRequest)
 	if err != nil {
@@ -90,6 +105,23 @@ func (l loanRequestService) FindById(ctx context.Context, id string) (*models.Lo
 
 func (l loanRequestService) FindByUserId(ctx context.Context, ownerUserUuid string) ([]*models.LoanRequest, error) {
 	loanRequests, err := l.loanRequestDao.FindByUserId(ctx, ownerUserUuid)
+	if err != nil {
+		return []*models.LoanRequest{}, fmt.Errorf("failed to fetch your loan requests: %w", err)
+	}
+	return loanRequests, nil
+}
+
+func (l loanRequestService) FindByProposalId(ctx context.Context, invokerUserUuid string, proposalUuid string) ([]*models.LoanRequest, error) {
+	proposal, err := l.loanProposalDao.FindById(ctx, proposalUuid)
+	if err != nil {
+		return []*models.LoanRequest{}, fmt.Errorf("failed to find the loan proposal by the provided id: %w", err)
+	}
+
+	if proposal.UserUUID != invokerUserUuid {
+		return []*models.LoanRequest{}, fmt.Errorf("user not found to be the owner of the loan proposal")
+	}
+
+	loanRequests, err := l.loanRequestDao.FindByProposalId(ctx, proposalUuid)
 	if err != nil {
 		return []*models.LoanRequest{}, fmt.Errorf("failed to fetch your loan requests: %w", err)
 	}

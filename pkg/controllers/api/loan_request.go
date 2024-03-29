@@ -1,6 +1,9 @@
 package api
 
-import "bitbucket.com/finease/backend/pkg/models"
+import (
+	"bitbucket.com/finease/backend/pkg/models"
+	"bitbucket.com/finease/backend/pkg/utils"
+)
 
 type LoanRequest struct {
 	Uuid          string  `json:"uuid,omitempty"`
@@ -11,6 +14,7 @@ type LoanRequest struct {
 	DurationToPay int64   `json:"duration,omitempty"`
 	Status        string  `json:"status,omitempty"`
 	Description   string  `json:"description,omitempty"`
+	ProposalUuid  *string `json:"proposal_uuid"`
 }
 
 func MapLoanRequestModelToApi(loanRequest *models.LoanRequest) *LoanRequest {
@@ -23,6 +27,7 @@ func MapLoanRequestModelToApi(loanRequest *models.LoanRequest) *LoanRequest {
 		DurationToPay: loanRequest.DurationToPay,
 		Status:        loanRequest.Status,
 		Description:   loanRequest.Description,
+		ProposalUuid:  utils.PtrCopy(loanRequest.ProposalUuid),
 	}
 }
 
@@ -35,5 +40,6 @@ func MapLoanRequestApiToModel(loanRequest *LoanRequest) *models.LoanRequest {
 		DurationToPay: loanRequest.DurationToPay,
 		Status:        loanRequest.Status,
 		Description:   loanRequest.Description,
+		ProposalUuid:  utils.PtrCopy(loanRequest.ProposalUuid),
 	}
 }

@@ -22,6 +22,7 @@ func SetupRouter(parentRouter *gin.Engine) {
 	)
 	loanRequestService := services.NewLoanRequestService(
 		dao.NewSqlLoanRequestDao(dbSessionFactory),
+		dao.NewSqlLoanProposalDao(dbSessionFactory),
 		dao.NewSqlUserDao(dbSessionFactory),
 	)
 
