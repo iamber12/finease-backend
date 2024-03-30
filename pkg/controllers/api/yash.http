@@ -1,0 +1,62 @@
+POST http://localhost:8000/v1/loan/requests/
+Accept: application/json
+X-Access-Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiIzMGEzZTY3My1kMDI4LTRjMmYtOTk2Ny02YzMwN2YyNzE0MGYiLCJleHAiOjE3MTIzNjEyMzh9.ZEfDfVbwZBBIZd2Py-yVLZyx2LkEAdhw_Lu62Uu_lGM
+
+{
+"amount_start": 10000,
+"amount_end": 20000,
+"min_interest": 8,
+"max_interest": 12,
+"duration": 8640000,
+"description": "Available to all the students out there"
+}
+###
+
+POST http://localhost:8000/v1/loan/requests/
+Accept: application/json
+X-Access-Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiIzMGEzZTY3My1kMDI4LTRjMmYtOTk2Ny02YzMwN2YyNzE0MGYiLCJleHAiOjE3MTIzNjEyMzh9.ZEfDfVbwZBBIZd2Py-yVLZyx2LkEAdhw_Lu62Uu_lGM
+
+{
+"amount": 10000,
+"min_interest": 12,
+"max_interest": 12,
+"duration": 8640000,
+"description": "Sample description",
+"proposal_uuid": "939cef0a-5a37-4411-9c4a-976e04bd95db"
+}
+###
+
+
+
+###
+PUT http://localhost:8000/v1/loan/proposals/939cef0a-5a37-4411-9c4a-976e04bd95db/grant/accept
+Accept: application/json
+X-Access-Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiIzMGEzZTY3My1kMDI4LTRjMmYtOTk2Ny02YzMwN2YyNzE0MGYiLCJleHAiOjE3MTIzNjEyMzh9.ZEfDfVbwZBBIZd2Py-yVLZyx2LkEAdhw_Lu62Uu_lGM
+
+{
+"loan_request_uuid": "e0dcf78b-0c68-487a-9b44-9edf2186d2e9",
+"amount_start": 10000,
+"amount_end": 20000,
+"min_interest": 8,
+"max_interest": 12,
+"min_return_duration": 8640000,
+"max_return_duration": 17280000,
+"description": "Available to all the students out there"
+}
+###
+
+GET http://localhost:8000/v1/loan/requests/requested
+Accept: application/json
+X-Access-Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiIzMGEzZTY3My1kMDI4LTRjMmYtOTk2Ny02YzMwN2YyNzE0MGYiLCJleHAiOjE3MTIzNjEyMzh9.ZEfDfVbwZBBIZd2Py-yVLZyx2LkEAdhw_Lu62Uu_lGM
+
+{
+"amount": 10000,
+"min_interest": 12,
+"max_interest": 12,
+"min_return_duration": 8640000,
+"max_return_duration": 17280000,
+"description": "Sample description",
+"proposal_uuid": "939cef0a-5a37-4411-9c4a-976e04bd95db"
+}
+
+

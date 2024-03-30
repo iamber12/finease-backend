@@ -34,7 +34,7 @@ func (s *sqlLoanProposal) FindById(ctx context.Context, id string) (*models.Loan
 func (s *sqlLoanProposal) FindAll(ctx context.Context) ([]*models.LoanProposal, error) {
 	tx := s.sessionFactory.New(ctx)
 	var existingLoanProposals []*models.LoanProposal
-	err := tx.Find(&existingLoanProposals).Error
+	err := tx.Where("status = ?", models.LOAN_PROPOSAL_AVAILABLE).Find(&existingLoanProposals).Error
 	if err != nil {
 		if !errors.Is(err, gorm.ErrRecordNotFound) {
 			return nil, fmt.Errorf("unable to find the loan proposals: %w", err)

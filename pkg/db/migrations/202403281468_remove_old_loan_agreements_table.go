@@ -6,21 +6,16 @@ package migrations
 // is done here, even though the same type is defined in pkg/api
 
 import (
-	"gorm.io/gorm"
-
 	"github.com/go-gormigrate/gormigrate/v2"
+	"gorm.io/gorm"
 )
 
-func removeLoanProposalsUniqueUserUuidIndex() *gormigrate.Migration {
-	type LoanProposal struct {
-	}
+func removeOldLoanAgreementsTable() *gormigrate.Migration {
+	type LoanAgreement struct{}
 	return &gormigrate.Migration{
-		ID: "202402212106",
+		ID: "202403281468",
 		Migrate: func(tx *gorm.DB) error {
-			if tx.Migrator().HasIndex(&LoanProposal{}, "loan_proposal_user_uuid_unique_idx") {
-				return tx.Migrator().DropIndex(&LoanProposal{}, "loan_proposal_user_uuid_unique_idx")
-			}
-			return nil
+			return tx.Migrator().DropTable(&LoanAgreement{})
 		},
 	}
 }

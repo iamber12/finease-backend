@@ -1,6 +1,6 @@
 POST http://localhost:8000/v1/loan/proposals
 Accept: application/json
-X-Access-Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiIyMTlkY2ZiMS0zNzE3LTQxMGMtOGI0OS0wZmQ4ODk5NzAxOGUiLCJleHAiOjE3MDk0ODkwMzV9.WS_Pf_iwEKOg6qLElPshLS9x327H3tBxzv1iuNzhC-s
+X-Access-Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiJjNGRjNDkxZS0zYTQ3LTQ1ZDItYjFiMC05MTI0NGU0NzcwZWIiLCJleHAiOjE3MTIzNjExMjd9.tY39PnppN5LtUr4HvZYOnIKm9lhmQ2zv6yUrKWq0TFs
 
 {
 "amount_start": 10000,
@@ -9,7 +9,6 @@ X-Access-Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiIyMTlkY2Z
 "max_interest": 12,
 "min_return_duration": 8640000,
 "max_return_duration": 17280000,
-"status": "available",
 "description": "Available to all the students out there"
 }
 
