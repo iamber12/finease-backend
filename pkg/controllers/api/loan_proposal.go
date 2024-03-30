@@ -47,3 +47,7 @@ func MapLoanProposalModelToResponse(loanProposal *models.LoanProposal) *LoanProp
 		Description:          loanProposal.Description,
 	}
 }
+
+type GrantLoanProposalRequestBody struct {
+	LoanRequestUuid string `json:"loan_request_uuid,omitempty"`
+}

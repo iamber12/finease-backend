@@ -13,17 +13,25 @@ func SetupRouter(parentRouter *gin.Engine) {
 	v1Router := parentRouter.Group("/v1")
 	dbSessionFactory := environment.Env.Database.SessionFactory
 
+	loanRequestDao := dao.NewSqlLoanRequestDao(dbSessionFactory)
+	loanProposalDao := dao.NewSqlLoanProposalDao(dbSessionFactory)
+	loanAgreementDao := dao.NewSqlLoanAgreementDao(dbSessionFactory)
+	userDao := dao.NewSqlUserDao(dbSessionFactory)
+
 	authService := services.NewAuthService(
 		dao.NewSqlUserDao(dbSessionFactory),
 	)
 	loanProposalService := services.NewLoanProposalService(
-		dao.NewSqlLoanProposalDao(dbSessionFactory),
-		dao.NewSqlUserDao(dbSessionFactory),
+		loanProposalDao,
+		loanRequestDao,
+		loanAgreementDao,
+		userDao,
 	)
 	loanRequestService := services.NewLoanRequestService(
-		dao.NewSqlLoanRequestDao(dbSessionFactory),
-		dao.NewSqlLoanProposalDao(dbSessionFactory),
-		dao.NewSqlUserDao(dbSessionFactory),
+		loanRequestDao,
+		loanProposalDao,
+		loanAgreementDao,
+		userDao,
 	)
 
 	jwtAuthzMiddleware := middlewares.IsJwtAuthorized(dao.NewSqlUserDao(dbSessionFactory))

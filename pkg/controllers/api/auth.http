@@ -19,3 +19,25 @@ Content-Type: application/json
   "password":  "hello123"
 }
 ###
+
+POST http://localhost:8000/v1/auth/register
+Content-Type: application/json
+
+{
+  "email": "akamande@uwaterloo.ca",
+  "password":  "hello123",
+  "name":  "Amandeep Kaur Singh Rathora",
+  "date_of_birth":  "03/08/1998",
+  "address": "313 Regina Street North",
+  "primary_role": "lender"
+}
+###
+
+POST http://localhost:8000/v1/auth/login
+Content-Type: application/json
+
+{
+  "email": "akamande@uwaterloo.ca",
+  "password":  "hello123"
+}
+###
