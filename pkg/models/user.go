@@ -1,8 +1,9 @@
 package models
 
 import (
-	"gorm.io/gorm"
 	"time"
+
+	"gorm.io/gorm"
 )
 
 type User struct {
@@ -16,4 +17,5 @@ type User struct {
 	PrimaryRole string
 	Email       string
 	Password    string
+	Active      *bool
 }

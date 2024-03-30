@@ -48,6 +48,8 @@ func (h authHandler) Login(c *gin.Context) {
 
 func (h authHandler) Register(c *gin.Context) {
 	var reqBody api.User
+	isActive := true
+
 	if err := c.BindJSON(&reqBody); err != nil {
 		resp := utils.ResponseRenderer(fmt.Sprintf("failed to parse the request body: %v", err))
 		c.JSON(http.StatusUnprocessableEntity, resp)
@@ -68,6 +70,7 @@ func (h authHandler) Register(c *gin.Context) {
 	}
 
 	inboundUserModel := api.MapUserRequestToModel(&reqBody)
+	inboundUserModel.Active = &isActive
 
 	createdUser, err := h.authService.Register(c, *inboundUserModel)
 	if err != nil {
