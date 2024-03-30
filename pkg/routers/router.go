@@ -34,7 +34,7 @@ func SetupRouter(parentRouter *gin.Engine) {
 		userDao,
 	)
 	userService := services.NewUserService(
-		dao.NewSqlUserDao(dbSessionFactory),
+		userDao,
 	)
 
 	jwtAuthzMiddleware := middlewares.IsJwtAuthorized(dao.NewSqlUserDao(dbSessionFactory))

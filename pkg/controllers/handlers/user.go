@@ -113,14 +113,16 @@ func (u userHandler) Update(c *gin.Context) {
 
 func (u userHandler) Deactivate(c *gin.Context) {
 	isActive := false
+
 	user, ok := c.Keys["user"].(models.User)
+
 	if !ok {
 		resp := utils.ResponseRenderer("failed to parse the user uuid from the processed header")
 		c.JSON(http.StatusInternalServerError, resp)
 		return
 	}
 
-	userToUpdate := models.User{Uuid: user.Uuid, Active: &isActive}
+	userToUpdate := models.User{Active: &isActive}
 
 	u.callUpdateService(c, user.Uuid, &userToUpdate, false)
 }
