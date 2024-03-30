@@ -12,7 +12,7 @@ type LoanRequest struct {
 	MinInterest   float64 `json:"min_interest,omitempty"`
 	MaxInterest   float64 `json:"max_interest,omitempty"`
 	DurationToPay int64   `json:"duration,omitempty"`
-	Status        string  `json:"status,omitempty"`
+	Status        *string `json:"status,omitempty"`
 	Description   string  `json:"description,omitempty"`
 	ProposalUuid  *string `json:"proposal_uuid"`
 }
@@ -25,7 +25,7 @@ func MapLoanRequestModelToApi(loanRequest *models.LoanRequest) *LoanRequest {
 		MinInterest:   loanRequest.MinInterest,
 		MaxInterest:   loanRequest.MaxInterest,
 		DurationToPay: loanRequest.DurationToPay,
-		Status:        loanRequest.Status,
+		Status:        utils.PtrCopy(loanRequest.Status),
 		Description:   loanRequest.Description,
 		ProposalUuid:  utils.PtrCopy(loanRequest.ProposalUuid),
 	}
@@ -38,7 +38,7 @@ func MapLoanRequestApiToModel(loanRequest *LoanRequest) *models.LoanRequest {
 		MinInterest:   loanRequest.MinInterest,
 		MaxInterest:   loanRequest.MaxInterest,
 		DurationToPay: loanRequest.DurationToPay,
-		Status:        loanRequest.Status,
+		Status:        utils.PtrCopy(loanRequest.Status),
 		Description:   loanRequest.Description,
 		ProposalUuid:  utils.PtrCopy(loanRequest.ProposalUuid),
 	}
