@@ -8,4 +8,5 @@ type User struct {
 	PrimaryRole string
 	Email       string
 	Password    string
+	Active      *bool
 }

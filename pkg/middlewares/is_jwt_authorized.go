@@ -1,13 +1,14 @@
 package middlewares
 
 import (
+	"fmt"
+	"net/http"
+
 	"bitbucket.com/finease/backend/pkg/dao"
 	"bitbucket.com/finease/backend/pkg/environment"
 	"bitbucket.com/finease/backend/pkg/utils"
-	"fmt"
 	jwt "github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
-	"net/http"
 )
 
 func IsJwtAuthorized(userDao dao.User) gin.HandlerFunc {
@@ -50,9 +51,16 @@ func IsJwtAuthorized(userDao dao.User) gin.HandlerFunc {
 
 		userUuid := claims.UserUuid
 		foundUser, err := userDao.FindById(c, userUuid)
+
 		if err != nil {
 			resp := utils.ResponseRenderer("The token found to belong to a non-existent user")
 			c.AbortWithStatusJSON(http.StatusUnauthorized, resp)
+			return
+		}
+
+		if !*foundUser.Active {
+			resp := utils.ResponseRenderer("The user has been deactivated")
+			c.AbortWithStatusJSON(http.StatusForbidden, resp)
 			return
 		}
 

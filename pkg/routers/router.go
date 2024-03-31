@@ -33,10 +33,14 @@ func SetupRouter(parentRouter *gin.Engine) {
 		loanAgreementDao,
 		userDao,
 	)
+	userService := services.NewUserService(
+		userDao,
+	)
 
 	jwtAuthzMiddleware := middlewares.IsJwtAuthorized(dao.NewSqlUserDao(dbSessionFactory))
 
 	v1.SetupAuthRouter(v1Router, authService)
 	v1.SetupLoanProposalRouter(v1Router, loanProposalService, jwtAuthzMiddleware)
 	v1.SetupLoanRequestsRouter(v1Router, loanRequestService, jwtAuthzMiddleware)
+	v1.SetupUserRouter(v1Router, userService, jwtAuthzMiddleware)
 }
