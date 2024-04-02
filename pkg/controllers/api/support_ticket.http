@@ -1,0 +1,105 @@
+######## Create
+POST http://localhost:8000/v1/support_ticket/
+Accept: application/json
+X-Access-Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiIwOGNmYWU0OC03NmVhLTQ0M2ItYjNjOC02MjRhZjRjOWUyMTEiLCJleHAiOjE3MTA1NDM4MjN9.vwrbbhUgkfa0eE-4JwUc7CFJTXinr8W0bs7akmOa2a0
+
+{
+  "subject": "need help",
+  "description": "payment gateway not working",
+  "status": "open"
+}
+
+#{
+#  "meta": {
+#    "message": "Support created successfully"
+#  },
+#  "payload": {
+#    "support_ticket": {
+#      "uuid": "fb4846c3-a434-42dc-a762-694480e8e6b1",
+#      "user_uuid": "ae281a2e-ec8b-4196-a389-17dfe22fdd98",
+#      "status": "open",
+#      "description": "payment gateway not working",
+#      "subject": "need help"
+#    }
+#  }
+#}
+
+
+######## Update
+PUT http://localhost:8000/v1/support_ticket/foo-bar-id
+Accept: application/json
+X-Access-Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiIwOGNmYWU0OC03NmVhLTQ0M2ItYjNjOC02MjRhZjRjOWUyMTEiLCJleHAiOjE3MTA1NDM4MjN9.vwrbbhUgkfa0eE-4JwUc7CFJTXinr8W0bs7akmOa2a0
+
+{
+  "subject": "update test",
+  "description": "update test",
+  "status": "closed"
+}
+#
+#{
+#  "meta": {
+#    "message": "Support ticket updated successfully"
+#  },
+#  "payload": {
+#    "support_ticket": {
+#      "uuid": "fb4846c3-a434-42dc-a762-694480e8e6b1",
+#      "user_uuid": "ae281a2e-ec8b-4196-a389-17dfe22fdd98",
+#      "status": "closed",
+#      "description": "update test",
+#      "subject": "update test"
+#    }
+#  }
+#}
+
+######## Get by UUID
+GET http://localhost:8000/v1/support_ticket/foo-bar-id
+Accept: application/json
+X-Access-Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiIwOGNmYWU0OC03NmVhLTQ0M2ItYjNjOC02MjRhZjRjOWUyMTEiLCJleHAiOjE3MTA1NDM4MjN9.vwrbbhUgkfa0eE-4JwUc7CFJTXinr8W0bs7akmOa2a0
+
+#
+#{
+#  "meta": {
+#    "message": "Support ticket updated successfully"
+#  },
+#  "payload": {
+#    "support_ticket": {
+#      "uuid": "fb4846c3-a434-42dc-a762-694480e8e6b1",
+#      "user_uuid": "ae281a2e-ec8b-4196-a389-17dfe22fdd98",
+#      "status": "closed",
+#      "description": "update test",
+#      "subject": "update test"
+#    }
+#  }
+#}
+
+######## Get all support tickets related to the current user
+GET http://localhost:8000/v1/support_ticket/my/
+Accept: application/json
+X-Access-Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiIwOGNmYWU0OC03NmVhLTQ0M2ItYjNjOC02MjRhZjRjOWUyMTEiLCJleHAiOjE3MTA1NDM4MjN9.vwrbbhUgkfa0eE-4JwUc7CFJTXinr8W0bs7akmOa2a0
+
+#
+#{
+#  "meta": {
+#    "message": "Support ticket updated successfully"
+#  },
+#  "payload": {
+#    "support_ticket": {
+#      "uuid": "fb4846c3-a434-42dc-a762-694480e8e6b1",
+#      "user_uuid": "ae281a2e-ec8b-4196-a389-17dfe22fdd98",
+#      "status": "closed",
+#      "description": "update test",
+#      "subject": "update test"
+#    }
+#  }
+#}
+
+######## Delete
+DELETE http://localhost:8000/v1/support_ticket/foo-bar-id
+Accept: application/json
+X-Access-Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiIwOGNmYWU0OC03NmVhLTQ0M2ItYjNjOC02MjRhZjRjOWUyMTEiLCJleHAiOjE3MTA1NDM4MjN9.vwrbbhUgkfa0eE-4JwUc7CFJTXinr8W0bs7akmOa2a0
+
+#{
+#  "meta": {
+#    "message": "Support ticket deleted successfully"
+#  }
+#}
