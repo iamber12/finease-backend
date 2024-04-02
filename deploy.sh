@@ -8,4 +8,4 @@ cd FinEase/backend
 git reset --hard HEAD~0
 git pull origin release/SIT --rebase
 /usr/local/go/bin/go build -o ./bin/finease-backend ./cmd/main.go
-ssh -o StrictHostKeyChecking=no ubuntu@ec2-18-226-186-2.us-east-2.compute.amazonaws.com "screen -dm bash -c 'DB_NAME=$DB_NAME DB_USER=$DB_USER DB_PASSWORD=$DB_PASSWORD DB_HOST=$DB_HOST DB_PORT=$DB_PORT bash ~/deploy.sh'"
+/usr/bin/nohup ~/FinEase/backend/bin/finease-backend serve --db-name=$DB_NAME --db-user=$DB_USER --db-password=$DB_PASSWORD --db-host=$DB_HOST --db-port=$DB_PORT > ~/finease-backend.log 2>&1 &
