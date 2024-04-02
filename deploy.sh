@@ -1,3 +1,4 @@
+sudo lsof -i :8000 | grep LISTEN | awk '{print $2}' | xargs kill
 cd FinEase/backend
 git reset --hard HEAD~0
 git pull origin dev --rebase
