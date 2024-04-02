@@ -44,10 +44,23 @@ func (s *sqlLoanRequest) FindByUserId(ctx context.Context, userUuid string) ([]*
 	return existingLoanRequest, nil
 }
 
+func (s *sqlLoanRequest) FindByProposalId(ctx context.Context, proposalUuid string) ([]*models.LoanRequest, error) {
+	tx := s.sessionFactory.New(ctx)
+	var existingLoanRequest []*models.LoanRequest
+	err := tx.Where("proposal_uuid = ?", proposalUuid).Find(&existingLoanRequest).Error
+	if err != nil {
+		if !errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, fmt.Errorf("unable to find the loan request: %w", err)
+		}
+		return nil, fmt.Errorf("loan request not found")
+	}
+	return existingLoanRequest, nil
+}
+
 func (s *sqlLoanRequest) FindAll(ctx context.Context) ([]*models.LoanRequest, error) {
 	tx := s.sessionFactory.New(ctx)
 	var existingLoanRequests []*models.LoanRequest
-	err := tx.Find(&existingLoanRequests).Error
+	err := tx.Where("status = ? AND proposal_uuid = ?", "", "").Find(&existingLoanRequests).Error
 	if err != nil {
 		if !errors.Is(err, gorm.ErrRecordNotFound) {
 			return nil, fmt.Errorf("unable to find the loan requests: %w", err)

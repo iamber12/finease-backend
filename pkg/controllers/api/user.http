@@ -1,0 +1,82 @@
+######## Update
+PUT http://localhost:8000/v1/user/
+Accept: application/json
+X-Access-Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiIwOGNmYWU0OC03NmVhLTQ0M2ItYjNjOC02MjRhZjRjOWUyMTEiLCJleHAiOjE3MTA1NDM4MjN9.vwrbbhUgkfa0eE-4JwUc7CFJTXinr8W0bs7akmOa2a0
+
+{
+  "name": "Updated Name"
+}
+
+#{
+#  "meta": {
+#    "message": "User succesfully updated"
+#  },
+#  "payload": {
+#    "user": {
+#      "uuid": "89125a66-eb90-405e-ac22-2c7903d01119",
+#      "name": "Updated Name",
+#      "date_of_birth": "03/08/2005",
+#      "address": "200 University Ave, Waterloo, Ontario",
+#      "primary_role": "lender",
+#      "email": "123@gmail.com",
+#      "password": "$2a$10$GRrocmLdF3TB7gEPXM4NwuEhaQO3qVMCULQf2Flm06er2ZHLST.Ui"
+#    }
+#  }
+#}
+
+######## Deactivate
+PUT http://localhost:8000/v1/user/deactivate/
+Accept: application/json
+X-Access-Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiIwOGNmYWU0OC03NmVhLTQ0M2ItYjNjOC02MjRhZjRjOWUyMTEiLCJleHAiOjE3MTA1NDM4MjN9.vwrbbhUgkfa0eE-4JwUc7CFJTXinr8W0bs7akmOa2a0
+
+#{
+#  "meta": {
+#    "message": "User deactivated"
+#  }
+#}
+
+
+######## Get current user
+GET http://localhost:8000/v1/user/
+Accept: application/json
+X-Access-Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiIwOGNmYWU0OC03NmVhLTQ0M2ItYjNjOC02MjRhZjRjOWUyMTEiLCJleHAiOjE3MTA1NDM4MjN9.vwrbbhUgkfa0eE-4JwUc7CFJTXinr8W0bs7akmOa2a0
+
+#{
+#  "meta": {
+#    "message": "User succesfully fetched"
+#  },
+#  "payload": {
+#    "user": {
+#      "uuid": "89125a66-eb90-405e-ac22-2c7903d01119",
+#      "name": "Updated Name",
+#      "date_of_birth": "03/08/2005",
+#      "address": "200 University Ave, Waterloo, Ontario",
+#      "primary_role": "lender",
+#      "email": "123@gmail.com",
+#      "password": "$2a$10$GRrocmLdF3TB7gEPXM4NwuEhaQO3qVMCULQf2Flm06er2ZHLST.Ui"
+#    }
+#  }
+#}
+
+
+######## Get any user by id
+GET http://localhost:8000/v1/user/foo-bar-id
+Accept: application/json
+X-Access-Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiIwOGNmYWU0OC03NmVhLTQ0M2ItYjNjOC02MjRhZjRjOWUyMTEiLCJleHAiOjE3MTA1NDM4MjN9.vwrbbhUgkfa0eE-4JwUc7CFJTXinr8W0bs7akmOa2a0
+
+#{
+#  "meta": {
+#    "message": "User succesfully fetched"
+#  },
+#  "payload": {
+#    "user": {
+#      "uuid": "a5633e24-1be8-4ca9-86d6-43ec63582748",
+#      "name": "A V",
+#      "date_of_birth": "03/08/1998",
+#      "address": "200 University Ave, Waterloo, Ontario",
+#      "primary_role": "lender",
+#      "email": "averma@gmail.com",
+#      "password": "$2a$10$Y4.Htyr0Ys0T/Cgvc1srUeLZnKpTtENM.xHwe8gDEI.RCvRnCQ8ES"
+#    }
+#  }
+#}

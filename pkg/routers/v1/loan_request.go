@@ -7,15 +7,19 @@ import (
 )
 
 func SetupLoanRequestsRouter(parentRouter *gin.RouterGroup, loanRequestsService services.LoanRequest, additionalMiddlewares ...gin.HandlerFunc) {
-	authRouter := parentRouter.Group("/loan/request")
+	loanRequestsRouter := parentRouter.Group("/loan/requests")
 	loanRequestsHandler := handlers.NewLoanRequestHandler(loanRequestsService)
 
-	authRouter.Use(additionalMiddlewares...)
+	loanRequestsRouter.Use(additionalMiddlewares...)
 
-	authRouter.POST("/", loanRequestsHandler.Create)
-	authRouter.PUT("/:loan_request_uuid", loanRequestsHandler.Update)
-	authRouter.DELETE("/:loan_request_uuid", loanRequestsHandler.Delete)
-	authRouter.GET("/", loanRequestsHandler.FindByUserId)
-	authRouter.GET("/loan-requests", loanRequestsHandler.FindAll)
-	authRouter.GET("/:loan_request_uuid", loanRequestsHandler.FindById)
+	loanRequestsRouter.POST("/", loanRequestsHandler.Create)
+	loanRequestsRouter.PUT("/request/:loan_request_uuid", loanRequestsHandler.Update)
+	loanRequestsRouter.DELETE("/request/:loan_request_uuid", loanRequestsHandler.Delete)
+	loanRequestsRouter.GET("/available", loanRequestsHandler.FindAll)
+	loanRequestsRouter.GET("/request/:loan_request_uuid", loanRequestsHandler.FindById)
+
+	loanRequestsRouter.PUT("/request/:loan_request_uuid/accept", loanRequestsHandler.Accept) // to be executed by the lender
+	loanRequestsRouter.PUT("/request/:loan_request_uuid/reject", loanRequestsHandler.Reject) // to be executed by the lender
+	loanRequestsRouter.GET("/received", loanRequestsHandler.GetReceivedForProposal)          // to be executed by the lender
+	loanRequestsRouter.GET("/requested", loanRequestsHandler.GetRequestedForUser)            // to be executed by the borrower
 }
