@@ -2,16 +2,6 @@ image: golang:1.22.0
 pipelines:
   default:
       - step:
-          name: Build
-          script:
-            - go build -a -o ./bin/finease-backend ./cmd/main.go
-  branches:
-    release/SIT:
-      - step:
-          name: Build
-          script:
-            - go build -a -o ./bin/finease-backend ./cmd/main.go
-      - step:
           name: Deploy to test
           deployment: test
           
@@ -20,3 +10,10 @@ pipelines:
             - scp -o StrictHostKeyChecking=no ./deploy.sh ubuntu@ec2-18-226-186-2.us-east-2.compute.amazonaws.com:/tmp/deploy.sh
             - ssh -tt -o StrictHostKeyChecking=no ubuntu@ec2-18-226-186-2.us-east-2.compute.amazonaws.com "DB_NAME=$DB_NAME DB_USER=$DB_USER DB_PASSWORD=$DB_PASSWORD DB_HOST=$DB_HOST DB_PORT=$DB_PORT bash /tmp/deploy.sh"
             - echo "Deploying finished"
+  branches:
+    release/SIT:
+      - step:
+          name: Build
+          script:
+            - go build -a -o ./bin/finease-backend ./cmd/main.go
+      
