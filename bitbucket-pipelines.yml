@@ -17,6 +17,6 @@ pipelines:
           
           script:
             - echo "Deployment Starting"
-            - scp -o StrictHostKeyChecking=no ./deploy.sh ssh -i ~/.ssh/FinEase.pem ubuntu@ec2-18-226-186-2.us-east-2.compute.amazonaws.com:/tmp/deploy.sh
-            - ssh -tt -o StrictHostKeyChecking=no ssh -i ~/.ssh/FinEase.pem ubuntu@ec2-18-226-186-2.us-east-2.compute.amazonaws.com "DB_NAME=$DB_NAME DB_USER=$DB_USER DB_PASSWORD=$DB_PASSWORD DB_HOST=$DB_HOST DB_PORT=$DB_PORT bash /tmp/deploy.sh"
+            - scp -o StrictHostKeyChecking=no ./deploy.sh ubuntu@ec2-18-226-186-2.us-east-2.compute.amazonaws.com:/tmp/deploy.sh
+            - ssh -tt -o StrictHostKeyChecking=no ubuntu@ec2-18-226-186-2.us-east-2.compute.amazonaws.com "DB_NAME=$DB_NAME DB_USER=$DB_USER DB_PASSWORD=$DB_PASSWORD DB_HOST=$DB_HOST DB_PORT=$DB_PORT bash /tmp/deploy.sh"
             - echo "Deploying finished"
