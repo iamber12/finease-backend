@@ -20,7 +20,7 @@ func NewSqlSupportTicketDao(factory db.SessionFactory) SupportTicket {
 
 func (s *sqlSupportTicket) FindById(ctx context.Context, id string) (*models.SupportTicket, error) {
 	tx := s.sessionFactory.New(ctx)
-	var existingSupportTicket *models.SupportTicket
+	var existingSupportTicket models.SupportTicket
 	err := tx.Where("uuid = ?", id).First(&existingSupportTicket).Error
 	if err != nil {
 		if !errors.Is(err, gorm.ErrRecordNotFound) {
@@ -28,7 +28,7 @@ func (s *sqlSupportTicket) FindById(ctx context.Context, id string) (*models.Sup
 		}
 		return nil, fmt.Errorf("support ticket not found")
 	}
-	return existingSupportTicket, nil
+	return &existingSupportTicket, nil
 }
 
 func (s *sqlSupportTicket) FindByUserId(ctx context.Context, userUuid string) ([]*models.SupportTicket, error) {
@@ -57,7 +57,7 @@ func (s *sqlSupportTicket) Create(ctx context.Context, supportTicket *models.Sup
 func (s *sqlSupportTicket) Update(ctx context.Context, id string, patch *models.SupportTicket) (*models.SupportTicket, error) {
 	tx := s.sessionFactory.New(ctx)
 
-	var existingSupportTicket *models.SupportTicket
+	var existingSupportTicket models.SupportTicket
 	err := tx.Where("uuid = ?", id).First(&existingSupportTicket).Error
 	if err != nil {
 		if !errors.Is(err, gorm.ErrRecordNotFound) {
