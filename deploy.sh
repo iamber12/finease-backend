@@ -1,4 +1,4 @@
-sudo lsof -i :8000 | grep LISTEN | awk '{print $2}' | xargs -r kill
+sudo systemctl stop finease-backend.service
 cd FinEase/backend
 git reset --hard HEAD~0
 git pull origin release/SIT --rebase
