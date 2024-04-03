@@ -45,12 +45,12 @@ func (a authService) Login(ctx context.Context, email string, password string) (
 	var err error
 	userDetails, err := a.userDao.FindByEmail(ctx, email)
 
-	if !*userDetails.Active {
-		return "", nil, fmt.Errorf("the user has been deactivated")
-	}
-
 	if err != nil {
 		return "", nil, fmt.Errorf("failed to get the user: %w", err)
+	}
+
+	if !*userDetails.Active {
+		return "", nil, fmt.Errorf("the user has been deactivated")
 	}
 
 	if !utils.ValidatePassword(password, userDetails.Password) {
