@@ -12,13 +12,17 @@ var (
 	SampleRole     = "lender"
 	SampleEmail    = "alex.bob@gmail.com"
 	SamplePassword = "foobar123"
+	SampleActive   = true
 	SampleUser     = models.User{
-		Uuid:        SampleUuid,
+		Generic: models.Generic{
+			Uuid: SampleUuid,
+		},
 		Name:        SampleName,
 		DateOfBirth: SampleDob,
 		Address:     SampleAddress,
 		PrimaryRole: SampleRole,
 		Email:       SampleEmail,
 		Password:    SamplePassword,
+		Active:      &SampleActive,
 	}
 )

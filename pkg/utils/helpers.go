@@ -50,7 +50,8 @@ func GenerateJWT(uuid, secret string) (string, error) {
 
 func FromPtr[T any](obj *T) T {
 	if obj == nil {
-		return *obj
+		var zero T
+		return zero
 	}
 	return *obj
 }
