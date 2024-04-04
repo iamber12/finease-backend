@@ -49,7 +49,7 @@ func (a authService) Login(ctx context.Context, email string, password string) (
 		return "", nil, fmt.Errorf("failed to get the user: %w", err)
 	}
 
-	if !*userDetails.Active {
+	if !utils.FromPtr(userDetails.Active) {
 		return "", nil, fmt.Errorf("the user has been deactivated")
 	}
 

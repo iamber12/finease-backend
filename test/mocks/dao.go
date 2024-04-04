@@ -1,10 +1,11 @@
 package mocks
 
 import (
-	"bitbucket.com/finease/backend/pkg/dao"
-	"bitbucket.com/finease/backend/pkg/models"
 	"context"
 	"fmt"
+
+	"bitbucket.com/finease/backend/pkg/dao"
+	"bitbucket.com/finease/backend/pkg/models"
 )
 
 type sqlUserDaoMock struct {
@@ -45,32 +46,32 @@ func (s sqlUserDaoMock) FindByEmail(ctx context.Context, email string) (*models.
 	return nil, fmt.Errorf("user not found")
 }
 
-func (s sqlUserDaoMock) Update(ctx context.Context, id string, clauses map[string]interface{}) (*models.User, error) {
+func (s sqlUserDaoMock) Update(ctx context.Context, id string, patch *models.User) (*models.User, error) {
 	existingUser, err := s.FindById(ctx, id)
 	if err != nil {
 		return nil, err
 	}
 
-	if clauses["uuid"].(string) != "" {
-		existingUser.Uuid = clauses["uuid"].(string)
+	if patch.Uuid != "" {
+		existingUser.Uuid = patch.Uuid
 	}
-	if clauses["name"].(string) != "" {
-		existingUser.Name = clauses["name"].(string)
+	if patch.Name != "" {
+		existingUser.Name = patch.Name
 	}
-	if clauses["date_of_birth"].(string) != "" {
-		existingUser.DateOfBirth = clauses["date_of_birth"].(string)
+	if patch.DateOfBirth != "" {
+		existingUser.DateOfBirth = patch.DateOfBirth
 	}
-	if clauses["address"].(string) != "" {
-		existingUser.Address = clauses["address"].(string)
+	if patch.Address != "" {
+		existingUser.Address = patch.Address
 	}
-	if clauses["primary_role"].(string) != "" {
-		existingUser.PrimaryRole = clauses["primary_role"].(string)
+	if patch.PrimaryRole != "" {
+		existingUser.PrimaryRole = patch.PrimaryRole
 	}
-	if clauses["email"].(string) != "" {
-		existingUser.Email = clauses["email"].(string)
+	if patch.Email != "" {
+		existingUser.Email = patch.Email
 	}
-	if clauses["password"].(string) != "" {
-		existingUser.Password = clauses["password"].(string)
+	if patch.Password != "" {
+		existingUser.Password = patch.Password
 	}
 
 	s.db[id] = existingUser
