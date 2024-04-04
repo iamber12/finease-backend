@@ -32,7 +32,6 @@ func (h authHandler) Login(c *gin.Context) {
 	}
 
 	jwtToken, user, err := h.authService.Login(c, reqBody.Email, reqBody.Password)
-
 	if err != nil {
 		resp := utils.ResponseRenderer(fmt.Sprintf("failed to authenticate the user %v", err))
 		c.JSON(http.StatusForbidden, resp)
@@ -48,6 +47,8 @@ func (h authHandler) Login(c *gin.Context) {
 
 func (h authHandler) Register(c *gin.Context) {
 	var reqBody api.User
+	isActive := true
+
 	if err := c.BindJSON(&reqBody); err != nil {
 		resp := utils.ResponseRenderer(fmt.Sprintf("failed to parse the request body: %v", err))
 		c.JSON(http.StatusUnprocessableEntity, resp)
@@ -68,8 +69,9 @@ func (h authHandler) Register(c *gin.Context) {
 	}
 
 	inboundUserModel := api.MapUserRequestToModel(&reqBody)
+	inboundUserModel.Active = &isActive
 
-	createdUser, err := h.authService.Register(c, inboundUserModel)
+	createdUser, err := h.authService.Register(c, *inboundUserModel)
 	if err != nil {
 		resp := utils.ResponseRenderer(fmt.Sprintf("failed to register the user: %v", err))
 		c.JSON(http.StatusBadRequest, resp)

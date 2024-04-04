@@ -12,7 +12,7 @@ import (
 )
 
 type Auth interface {
-	Register(ctx context.Context, user *models.User) (*models.User, error)
+	Register(ctx context.Context, user models.User) (*models.User, error)
 	Login(ctx context.Context, email string, password string) (string, *models.User, error)
 }
 
@@ -24,7 +24,7 @@ func NewAuthService(userDao dao.User) Auth {
 	return authService{userDao: userDao}
 }
 
-func (a authService) Register(ctx context.Context, user *models.User) (*models.User, error) {
+func (a authService) Register(ctx context.Context, user models.User) (*models.User, error) {
 	var err error
 
 	user.CreatedAt, user.UpdatedAt = time.Now(), time.Now()
@@ -34,7 +34,7 @@ func (a authService) Register(ctx context.Context, user *models.User) (*models.U
 		return nil, fmt.Errorf("failed to hash the incoming password: %w", err)
 	}
 
-	createdUser, err := a.userDao.Create(ctx, user)
+	createdUser, err := a.userDao.Create(ctx, &user)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create the user: %w", err)
 	}
@@ -47,6 +47,10 @@ func (a authService) Login(ctx context.Context, email string, password string) (
 
 	if err != nil {
 		return "", nil, fmt.Errorf("failed to get the user: %w", err)
+	}
+
+	if !utils.FromPtr(userDetails.Active) {
+		return "", nil, fmt.Errorf("the user has been deactivated")
 	}
 
 	if !utils.ValidatePassword(password, userDetails.Password) {

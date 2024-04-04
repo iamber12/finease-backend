@@ -17,7 +17,10 @@ func removeLoanProposalsUniqueUserUuidIndex() *gormigrate.Migration {
 	return &gormigrate.Migration{
 		ID: "202402212106",
 		Migrate: func(tx *gorm.DB) error {
-			return tx.Migrator().DropIndex(&LoanProposal{}, "loan_proposal_user_uuid_unique_idx")
+			if tx.Migrator().HasIndex(&LoanProposal{}, "loan_proposal_user_uuid_unique_idx") {
+				return tx.Migrator().DropIndex(&LoanProposal{}, "loan_proposal_user_uuid_unique_idx")
+			}
+			return nil
 		},
 	}
 }

@@ -12,7 +12,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func addFinancialTransactionsTable() *gormigrate.Migration {
+func addFinancialTranscationsTable() *gormigrate.Migration {
 	type FinancialTranscations struct {
 		Model
 		LoanProposalUUID string  `gorm:"not null"`

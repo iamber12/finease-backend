@@ -11,10 +11,16 @@ var MigrationList = []*gormigrate.Migration{
 	addUserTable(),
 	addLoadProposalsTable(),
 	removeLoanProposalsUniqueUserUuidIndex(),
-	addLoadRequestTable(),
-	addLoadAgreementsTable(),
-	addFinancialTransactionsTable(),
+	addLoanRequestTable(),
+	addLoanAgreementsTable(),
+	addFinancialTranscationsTable(),
 	usersTableEmailUniqueIndex(),
+	addProposalUuidToLoanRequestsTable(),
+	userActiveField(),
+	removeOldLoanAgreementsTable(),
+	addNewLoanAgreementsTable(),
+	addSupportTicketTable(),
+	addFinancialTransactionsTable(),
 }
 
 // Model represents the base model struct. All entities will have this struct embedded.

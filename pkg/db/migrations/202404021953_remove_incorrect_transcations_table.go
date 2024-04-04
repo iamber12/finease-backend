@@ -6,24 +6,19 @@ package migrations
 // is done here, even though the same type is defined in pkg/api
 
 import (
-	"time"
-
 	"github.com/go-gormigrate/gormigrate/v2"
 	"gorm.io/gorm"
 )
 
-func addLoadAgreementsTable() *gormigrate.Migration {
-	type LoanAgreement struct {
-		Model
-		LoanAgreementUUID    string         `gorm:"not null"`
-		Amount               float64        `gorm:"not null"`
-		LenderAccountDetails map[string]any `gorm:"type:jsonb"`
-		Date                 time.Time
-	}
+func removeIncorrectFinancialTranscationsTable() *gormigrate.Migration {
+	type FinancialTranscations struct{}
 	return &gormigrate.Migration{
-		ID: "202402222150",
+		ID: "202404021953",
 		Migrate: func(tx *gorm.DB) error {
-			return tx.Migrator().AutoMigrate(&LoanAgreement{})
+			if tx.Migrator().HasTable(&FinancialTranscations{}) {
+				return tx.Migrator().DropTable(&FinancialTranscations{})
+			}
+			return nil
 		},
 	}
 }
