@@ -9,13 +9,19 @@ pipelines:
   branches:
     release/SIT:
       - step:
-          name: Build
+          name: Build and Test
           script:
             - go build -a -o ./bin/finease-backend ./cmd/main.go
+            - make tests
+    
+    release/Production:
+      - step:
+            name: Build
+            script:
+              - go build -a -o ./bin/finease-backend ./cmd/main.go
       - step:
           name : Deploy
           deployment: test
-
           script:
             - echo "Deployment Starting"
             - scp -o StrictHostKeyChecking=no ./deploy.sh ubuntu@ec2-18-226-186-2.us-east-2.compute.amazonaws.com:~/deploy.sh
