@@ -2,9 +2,10 @@ image: golang:1.22.0
 pipelines:
   default:
    - step:
-          name: Build
+          name: Build and Test
           script:
             - go build -a -o ./bin/finease-backend ./cmd/main.go
+            - make tests
   branches:
     release/SIT:
       - step:
