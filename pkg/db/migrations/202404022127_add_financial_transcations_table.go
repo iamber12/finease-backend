@@ -12,21 +12,21 @@ import (
 	"gorm.io/gorm"
 )
 
-func addFinancialTranscationsTable() *gormigrate.Migration {
-	type FinancialTranscations struct {
+func addFinancialTransactionsTable() *gormigrate.Migration {
+	type FinancialTransactions struct {
 		Model
-		LoanProposalUUID string  `gorm:"not null"`
-		LoanRequestID    string  `gorm:"not null"`
+		LoanProposalUuid string  `gorm:"not null"`
+		LoanRequestUuid  string  `gorm:"not null"`
+		BorrowerUuid     string  `gorm:"not null"` // for caching purposes
+		LenderUuid       string  `gorm:"not null"` // for caching purposes
 		Amount           float64 `gorm:"not null"`
-		Interest         float64 `gorm:"not null"`
-		Duration         int64   `gorm:"not null"`
+		Payer            string  `gorm:"not null"` // enum: borrower/lender
 		DateOffered      time.Time
-		Status           string
 	}
 	return &gormigrate.Migration{
-		ID: "202402222133",
+		ID: "202404022127",
 		Migrate: func(tx *gorm.DB) error {
-			return tx.Migrator().AutoMigrate(&FinancialTranscations{})
+			return tx.Migrator().AutoMigrate(&FinancialTransactions{})
 		},
 	}
 }

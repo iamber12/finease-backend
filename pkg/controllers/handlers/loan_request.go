@@ -54,6 +54,7 @@ func (l loanRequestHandler) Create(c *gin.Context) {
 	if inboundLoanRequestModel.ProposalUuid == nil {
 		inboundLoanRequestModel.ProposalUuid = utils.ToPtr("")
 	}
+	inboundLoanRequestModel.Status = utils.ToPtr("")
 
 	createdLoanRequest, err := l.loanRequestService.Create(c, userUuid, inboundLoanRequestModel)
 	if err != nil {
@@ -63,7 +64,6 @@ func (l loanRequestHandler) Create(c *gin.Context) {
 	}
 
 	outboundLoanRequest := api.MapLoanRequestModelToApi(createdLoanRequest)
-
 	resp := utils.ResponseRenderer("Loan Request created successfully", gin.H{
 		"loan_request": outboundLoanRequest,
 	})
@@ -136,11 +136,13 @@ func (l loanRequestHandler) FindById(c *gin.Context) {
 	loanRequestResp, err := l.loanRequestService.FindById(c, loanRequestUuid)
 
 	if loanRequestResp.UserUUID != userUuid {
-
+		resp := utils.ResponseRenderer(fmt.Sprintf("failed to list your loan Request: %v", err))
+		c.JSON(http.StatusUnauthorized, resp)
+		return
 	}
 
 	if err != nil {
-		resp := utils.ResponseRenderer(fmt.Sprintf("failed to list your loan Request: %v", err))
+		resp := utils.ResponseRenderer(fmt.Sprintf("failed to find your loan Request: %v", err))
 		c.JSON(http.StatusBadRequest, resp)
 		return
 	}
