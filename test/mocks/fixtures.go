@@ -2,6 +2,7 @@ package mocks
 
 import (
 	"bitbucket.com/finease/backend/pkg/models"
+	"bitbucket.com/finease/backend/pkg/utils"
 )
 
 var (
@@ -13,12 +14,15 @@ var (
 	SampleEmail    = "alex.bob@gmail.com"
 	SamplePassword = "foobar123"
 	SampleUser     = models.User{
-		Uuid:        SampleUuid,
+		Generic: models.Generic{
+			Uuid: SampleUuid,
+		},
 		Name:        SampleName,
 		DateOfBirth: SampleDob,
 		Address:     SampleAddress,
 		PrimaryRole: SampleRole,
 		Email:       SampleEmail,
 		Password:    SamplePassword,
+		Active:      utils.ToPtr(true),
 	}
 )

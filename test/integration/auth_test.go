@@ -1,11 +1,12 @@
 package integration
 
 import (
+	"context"
+	"testing"
+
 	"bitbucket.com/finease/backend/pkg/controllers/services"
 	"bitbucket.com/finease/backend/test/mocks"
-	"context"
 	"github.com/stretchr/testify/assert"
-	"testing"
 )
 
 func TestAuthRegister(t *testing.T) {

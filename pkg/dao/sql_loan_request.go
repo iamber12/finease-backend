@@ -20,7 +20,7 @@ func NewSqlLoanRequestDao(factory db.SessionFactory) LoanRequest {
 
 func (s *sqlLoanRequest) FindById(ctx context.Context, id string) (*models.LoanRequest, error) {
 	tx := s.sessionFactory.New(ctx)
-	var existingLoanRequest *models.LoanRequest
+	var existingLoanRequest models.LoanRequest
 	err := tx.Where("uuid = ?", id).First(&existingLoanRequest).Error
 	if err != nil {
 		if !errors.Is(err, gorm.ErrRecordNotFound) {
@@ -28,7 +28,7 @@ func (s *sqlLoanRequest) FindById(ctx context.Context, id string) (*models.LoanR
 		}
 		return nil, fmt.Errorf("loan request not found")
 	}
-	return existingLoanRequest, nil
+	return &existingLoanRequest, nil
 }
 
 func (s *sqlLoanRequest) FindByUserId(ctx context.Context, userUuid string) ([]*models.LoanRequest, error) {
@@ -83,7 +83,7 @@ func (s *sqlLoanRequest) Create(ctx context.Context, loanRequest *models.LoanReq
 func (s *sqlLoanRequest) Update(ctx context.Context, id string, patch *models.LoanRequest) (*models.LoanRequest, error) {
 	tx := s.sessionFactory.New(ctx)
 
-	var existingLoanRequest *models.LoanRequest
+	var existingLoanRequest models.LoanRequest
 	err := tx.Where("uuid = ?", id).First(&existingLoanRequest).Error
 	if err != nil {
 		if !errors.Is(err, gorm.ErrRecordNotFound) {
@@ -91,7 +91,7 @@ func (s *sqlLoanRequest) Update(ctx context.Context, id string, patch *models.Lo
 		}
 		return nil, fmt.Errorf("loan request not found")
 	}
-	if err := tx.Model(existingLoanRequest).Where("uuid = ?", id).Updates(patch).Error; err != nil {
+	if err := tx.Model(&existingLoanRequest).Where("uuid = ?", id).Updates(patch).Error; err != nil {
 		return nil, fmt.Errorf("unable to update the loan request: %w", err)
 	}
 	return s.FindById(ctx, id)
