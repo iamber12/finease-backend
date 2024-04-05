@@ -13,6 +13,7 @@ import (
 
 type LoanProposal interface {
 	Create(c *gin.Context)
+	FindOne(c *gin.Context)
 	ListAvailable(c *gin.Context)
 	ListMine(c *gin.Context)
 	Update(c *gin.Context)
@@ -26,6 +27,22 @@ type LoanProposal interface {
 
 type loanProposalsHandler struct {
 	loanProposalsService services.LoanProposal
+}
+
+func (l loanProposalsHandler) FindOne(c *gin.Context) {
+	loanProposalUuid := c.Param("loan_proposal_uuid")
+	loanProposal, err := l.loanProposalsService.FindOne(c, loanProposalUuid)
+	if err != nil {
+		resp := utils.ResponseRenderer(fmt.Sprintf("failed to get the loan proposal: %v", err))
+		c.JSON(http.StatusBadRequest, resp)
+		return
+	}
+
+	outboundLoanProposal := api.MapLoanProposalModelToResponse(loanProposal)
+	resp := utils.ResponseRenderer("Loan proposal fetched successfully", gin.H{
+		"loan_proposal": outboundLoanProposal,
+	})
+	c.JSON(http.StatusOK, resp)
 }
 
 func NewLoanProposalsHandler(loanProposalsService services.LoanProposal) LoanProposal {
