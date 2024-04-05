@@ -13,6 +13,7 @@ func SetupLoanProposalRouter(parentRouter *gin.RouterGroup, loanProposalService 
 	loanProposalRouter.Use(additionalMiddlewares...)
 
 	loanProposalRouter.POST("/", loanProposalHandler.Create)
+	loanProposalRouter.GET("/:loan_proposal_uuid", loanProposalHandler.FindOne)
 	loanProposalRouter.PUT("/:loan_proposal_uuid", loanProposalHandler.Update)
 	loanProposalRouter.GET("/my", loanProposalHandler.ListMine)
 	loanProposalRouter.GET("/available", loanProposalHandler.ListAvailable)

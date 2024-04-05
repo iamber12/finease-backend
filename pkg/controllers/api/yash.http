@@ -1,4 +1,4 @@
-POST http://localhost:8000/v1/loan/requests/
+GET http://localhost:8000/v1/loan/proposals/939cef0a-5a37-4411-9c4a-976e04bd95db
 Accept: application/json
 X-Access-Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQiOiIzMGEzZTY3My1kMDI4LTRjMmYtOTk2Ny02YzMwN2YyNzE0MGYiLCJleHAiOjE3MTIzNjEyMzh9.ZEfDfVbwZBBIZd2Py-yVLZyx2LkEAdhw_Lu62Uu_lGM
 
