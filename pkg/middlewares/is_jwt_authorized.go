@@ -58,7 +58,7 @@ func IsJwtAuthorized(userDao dao.User) gin.HandlerFunc {
 			return
 		}
 
-		if !*foundUser.Active {
+		if !utils.FromPtr(foundUser.Active) {
 			resp := utils.ResponseRenderer("The user has been deactivated")
 			c.AbortWithStatusJSON(http.StatusForbidden, resp)
 			return

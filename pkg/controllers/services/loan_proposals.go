@@ -13,6 +13,7 @@ import (
 
 type LoanProposal interface {
 	Create(ctx context.Context, loanProposal *models.LoanProposal) (*models.LoanProposal, error)
+	FindOne(ctx context.Context, loanProposalUuid string) (*models.LoanProposal, error)
 	Update(ctx context.Context, ownerUserUuid, id string, patch *models.LoanProposal) (*models.LoanProposal, error)
 	Delete(ctx context.Context, ownerUserUuid, loanProposalUuid string) error
 	FindAvailable(ctx context.Context) ([]*models.LoanProposal, error)
@@ -52,6 +53,14 @@ func (l loanProposalService) Create(ctx context.Context, loanProposal *models.Lo
 		return nil, fmt.Errorf("failed to create the loan proposal: %w", err)
 	}
 	return createdLoanProposal, nil
+}
+
+func (l loanProposalService) FindOne(ctx context.Context, loanProposalUuid string) (*models.LoanProposal, error) {
+	proposal, err := l.loanProposalDao.FindById(ctx, loanProposalUuid)
+	if err != nil {
+		return &models.LoanProposal{}, fmt.Errorf("failed to the loan proposal: %w", err)
+	}
+	return proposal, nil
 }
 
 func (l loanProposalService) Update(ctx context.Context, ownerUserUuid, loanProposalUuid string, patch *models.LoanProposal) (*models.LoanProposal, error) {
