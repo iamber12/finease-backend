@@ -5,6 +5,7 @@ Welcome to the backend repository of FinEase! FinEase is a user-friendly and fea
 ## Overview
 
 This repository contains the backend codebase of FinEase. The backend is responsible for handling various functionalities such as user authentication, loan management, transaction processing, and more.
+<br>Frontend repository - [https://github.com/iamber12/finease-frontend](https://github.com/iamber12/finease-frontend)
 
 ## UML Diagram and System Architecture
 ![image](https://github.com/iamber12/finease-p2p-loan-management-app/assets/26606211/8022c5b7-a694-4d83-a9ef-0adab7400f85)
